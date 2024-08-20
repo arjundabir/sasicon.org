@@ -1,6 +1,7 @@
 "use client";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface AddTicketsProps {
   id: string;
@@ -32,6 +33,9 @@ interface AddTicketsFormProps {
 const AddTicketsForm = ({ setOpen, id, firstName }: AddTicketsFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
+
+  const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -54,10 +58,12 @@ const AddTicketsForm = ({ setOpen, id, firstName }: AddTicketsFormProps) => {
       console.error(error);
     } finally {
       setIsLoading(false);
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setOpen(false);
+      router.refresh();
     }
   };
+
   return (
     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white h-fit w-[90dvw] p-3 border rounded-lg">
       <XMarkIcon className="h-6 w-6" onClick={() => setOpen(false)} />

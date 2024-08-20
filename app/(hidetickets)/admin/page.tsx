@@ -2,8 +2,11 @@ import React from "react";
 import { sql } from "@vercel/postgres";
 import { User } from "@/types/user";
 import Table from "@/components/admin/Table";
+import { unstable_noStore as noStore } from "next/cache";
 
 const page = async () => {
+  noStore();
+
   const result = await sql`SELECT * FROM users`;
   const users = result.rows as User[];
   return (
