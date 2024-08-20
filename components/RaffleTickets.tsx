@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import SASIConTicket from "@/public/sasiconTicket.png";
 import Image from "next/image";
+import { useCookies } from "react-cookie";
 
 const RaffleTickets = () => {
+  const [{ raffleTickets }] = useCookies(["raffleTickets"]);
   const [isClicked, setIsClicked] = useState(false);
   return (
     <div className="absolute bottom-2 right-2">
@@ -15,7 +17,11 @@ const RaffleTickets = () => {
         }`}
         onClick={() => setIsClicked(!isClicked)}
       >
-        {isClicked ? <Information /> : <Logo />}
+        {isClicked ? (
+          <Information raffleTickets={raffleTickets as string} />
+        ) : (
+          <Logo />
+        )}
       </div>
     </div>
   );
@@ -35,12 +41,16 @@ const Logo = () => {
   );
 };
 
-const Information = () => {
+const Information = ({ raffleTickets }: { raffleTickets: string }) => {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <p>
-        10 <span className="text-xs">Tickets</span>
-      </p>
+    <div className="flex flex-col items-center justify-center py-0.5 px-2">
+      {!raffleTickets ? (
+        <p className="text-sm">Check in to get your tickets.</p>
+      ) : (
+        <p>
+          {raffleTickets} <span className="text-xs">Ticket(s)</span>
+        </p>
+      )}
     </div>
   );
 };
