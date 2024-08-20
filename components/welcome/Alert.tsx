@@ -54,9 +54,9 @@ export default function Alert({
           <div className="ml-3">
             {statusCode === 201 && (
               <p className="text-sm font-medium text-green-800">
-                Welcome to SASICon, {result?.first_name}! You have{" "}
-                {result?.raffle_tickets} raffle tickets. Please wait to be
-                automatically redirected or click{" "}
+                Congratulations, {result?.first_name}, you just got your first
+                raffle ticket. Please wait to be automatically redirected or
+                click{" "}
                 <Link href="/" className="underline">
                   here
                 </Link>
