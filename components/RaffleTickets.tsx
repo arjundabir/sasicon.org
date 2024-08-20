@@ -19,11 +19,7 @@ const RaffleTickets = ({ tickets }: RaffleTicketsProps) => {
         }`}
         onClick={() => setIsClicked(!isClicked)}
       >
-        {isClicked ? (
-          <Information raffleTickets={tickets as string} />
-        ) : (
-          <Logo />
-        )}
+        {isClicked ? <Information raffleTickets={tickets} /> : <Logo />}
       </div>
     </div>
   );

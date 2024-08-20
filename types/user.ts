@@ -5,4 +5,5 @@ export interface User {
   raffle_tickets: number;
   wants_certificate: boolean;
   workshops: string[];
+  is_admin: boolean;
 }
