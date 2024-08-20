@@ -30,5 +30,16 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Redirect to certificate if user is not enrolled
+  if(request.nextUrl.pathname === "/certificate"){
+    const result = await sql`
+    SELECT * FROM certificates 
+    WHERE user_id = ${userId?.value}`
+    const user = result.rows[0]
+    if(result.rows.length !== 0){
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
 
 }
