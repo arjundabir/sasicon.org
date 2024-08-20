@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import SASIConTicket from "@/public/sasiconTicket.png";
 import Image from "next/image";
-import { useCookies } from "react-cookie";
 
-const RaffleTickets = () => {
-  const [{ raffleTickets }] = useCookies(["raffleTickets"]);
+interface RaffleTicketsProps {
+  tickets: string;
+}
+
+const RaffleTickets = ({ tickets }: RaffleTicketsProps) => {
   const [isClicked, setIsClicked] = useState(false);
   return (
     <div className="absolute bottom-2 right-2">
@@ -18,7 +20,7 @@ const RaffleTickets = () => {
         onClick={() => setIsClicked(!isClicked)}
       >
         {isClicked ? (
-          <Information raffleTickets={raffleTickets as string} />
+          <Information raffleTickets={tickets as string} />
         ) : (
           <Logo />
         )}
