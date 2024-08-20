@@ -1,4 +1,4 @@
-import RaffleTickets from "@/components/RaffleTickets";
+import Button from "@/components/tickets/Button";
 import { cookies } from "next/headers";
 
 export default function RootLayout({
@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <main>
       {children}
-      <RaffleTickets tickets={tickets?.value as string} />
+      <Button tickets={tickets?.value as string} />
     </main>
   );
 }
