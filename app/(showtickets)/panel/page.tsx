@@ -1,17 +1,19 @@
 import React from "react";
-import SubmitQuestion from "@/components/panel/SubmitQuestion";
+import QuestionDashboard from "@/components/panel/QuestionDashboard";
+import { sql } from "@vercel/postgres";
+import { Panel } from "@/types/panel";
 import { cookies } from "next/headers";
+import { unstable_noStore as noStore } from "next/cache";
 
 const page = async () => {
+  noStore();
   const cookieStore = cookies();
   const id = cookieStore.get("userId")?.value;
-
+  const result = await sql<Panel>`SELECT * FROM panel WHERE user_id = ${id}`;
+  const questions = result.rows;
   return (
-    <div className="flex flex-col min-h-dvh flex-1 justify-center px-6 py-12 lg:px-8">
-      <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        Ask a Question to the Panel.
-      </h2>
-      <SubmitQuestion id={id as string} />
+    <div className="relative h-dvh">
+      <QuestionDashboard questions={questions} />
     </div>
   );
 };

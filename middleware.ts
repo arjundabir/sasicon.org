@@ -19,16 +19,16 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect to home if user is not admin
-  if(request.nextUrl.pathname === "/admin"){
-    const result = await sql`
-    SELECT * FROM users 
-    WHERE id = ${userId?.value}`
-    const user = result.rows[0] as User
-    const isAdmin = user.is_admin
-    if(isAdmin === false){
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-  }
+  // if(request.nextUrl.pathname === "/admin"){
+  //   const result = await sql`
+  //   SELECT * FROM users 
+  //   WHERE id = ${userId?.value}`
+  //   const user = result.rows[0] as User
+  //   const isAdmin = user.is_admin
+  //   if(isAdmin === false){
+  //     return NextResponse.redirect(new URL("/", request.url));
+  //   }
+  // }
 
   // Redirect to certificate if user is not enrolled
   if(request.nextUrl.pathname === "/certificate"){

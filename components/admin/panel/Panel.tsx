@@ -24,13 +24,13 @@ const Panel = ({ panel }: { panel: Panel[] }) => {
           <div className="flex gap-2">
             <button
               className="bg-green-500 text-white px-2 py-1 rounded-md"
-              onClick={() => handleApproval(item.id, true)}
+              onClick={() => handleApproval(item.user_id, true)}
             >
               Approve
             </button>
             <button
               className="bg-red-500 text-white px-2 py-1 rounded-md"
-              onClick={() => handleApproval(item.id, false)}
+              onClick={() => handleApproval(item.user_id, false)}
             >
               Reject
             </button>

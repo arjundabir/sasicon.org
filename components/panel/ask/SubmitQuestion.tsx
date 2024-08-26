@@ -1,21 +1,22 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface SubmitQuestionProps {
   id: string;
 }
 
 const SubmitQuestion = ({ id }: SubmitQuestionProps) => {
-  const [isApproved, setIsApproved] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [question, setQuestion] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     const formData = new FormData(e.target as HTMLFormElement);
     const question = formData.get("question") as string;
-    const response = await fetch("/api/panel/question", {
+    const response = await fetch("/api/panel/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,50 +29,15 @@ const SubmitQuestion = ({ id }: SubmitQuestionProps) => {
     const { newQuestion } = await response.json();
     setQuestion(newQuestion.question);
 
-    // Start polling for approval status
-    pollApprovalStatus(newQuestion.id);
+    // Redirect to /panel after submission
+    router.push("/panel");
   };
-
-  const pollApprovalStatus = async (questionId: string) => {
-    const interval = setInterval(async () => {
-      const response = await fetch(`/api/panel/status`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
-      if (response.ok) {
-        const { question } = await response.json();
-        console.log(question);
-        if (question.is_approved !== null) {
-          setIsApproved(question.is_approved);
-          setIsLoading(false);
-          clearInterval(interval);
-        }
-      }
-    }, 5000); // Poll every 5 seconds
-  };
-
-  useEffect(() => {
-    console.log(isApproved);
-  }, [isApproved]);
 
   return isLoading ? (
     <div className="absolute inset-0 h-dvh w-dvw bg-white flex justify-center items-center">
       <p>Question: {question}</p>
       <div>Loading...</div>
     </div>
-  ) : isApproved !== null ? (
-    isApproved === true ? (
-      <div className="absolute inset-0 h-dvh w-dvw bg-green-500 flex justify-center items-center">
-        <p>Your question has been approved!</p>
-      </div>
-    ) : (
-      <div className="absolute inset-0 h-dvh w-dvw bg-red-500 flex justify-center items-center">
-        <p>Your question was not approved.</p>
-      </div>
-    )
   ) : (
     <form className="mt-6" onSubmit={handleSubmit}>
       <div>
