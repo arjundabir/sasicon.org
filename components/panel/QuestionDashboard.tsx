@@ -1,5 +1,6 @@
 import { Panel } from "@/types/panel";
 import EditQuestionButton from "./EditQuestionButton";
+import Link from "next/link";
 
 export default function QuestionDashboard({
   questions,
@@ -18,13 +19,11 @@ export default function QuestionDashboard({
           </p>
         </div>
       </div>
-      <button
-        type="button"
-        className="my-2 rounded-md bg-blue-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 w-full"
-      >
-        Add Question
-      </button>
-
+      <div className="w-full my-2">
+        <button className="rounded-md bg-blue-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          <Link href="/panel/ask">Add Question</Link>
+        </button>
+      </div>
       <hr className="my-2" />
       <div className="flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

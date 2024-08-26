@@ -8,7 +8,6 @@ interface SubmitQuestionProps {
 
 const SubmitQuestion = ({ id }: SubmitQuestionProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [question, setQuestion] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +26,6 @@ const SubmitQuestion = ({ id }: SubmitQuestionProps) => {
       throw new Error("Failed to submit question");
     }
     const { newQuestion } = await response.json();
-    setQuestion(newQuestion.question);
 
     // Redirect to /panel after submission
     router.push("/panel");
