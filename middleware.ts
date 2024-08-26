@@ -19,16 +19,16 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect to home if user is not admin
-  // if(request.nextUrl.pathname === "/admin"){
-  //   const result = await sql`
-  //   SELECT * FROM users 
-  //   WHERE id = ${userId?.value}`
-  //   const user = result.rows[0] as User
-  //   const isAdmin = user.is_admin
-  //   if(isAdmin === false){
-  //     return NextResponse.redirect(new URL("/", request.url));
-  //   }
-  // }
+  if(request.nextUrl.pathname === "/admin"){
+    const result = await sql`
+    SELECT * FROM users 
+    WHERE id = ${userId?.value}`
+    const user = result.rows[0] as User
+    const isAdmin = user.is_admin
+    if(isAdmin === false){
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
 
   // Redirect to certificate if user is not enrolled
   if(request.nextUrl.pathname === "/certificate"){
@@ -38,6 +38,17 @@ export async function middleware(request: NextRequest) {
     const user = result.rows[0]
     if(result.rows.length !== 0){
       return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  // Redirect to ask question if user has not asked a question
+  if (request.nextUrl.pathname === "/panel"){
+    const result = await sql`
+    SELECT * FROM panel 
+    WHERE user_id = ${userId?.value}`
+    const user = result.rows[0]
+    if(result.rows.length === 0){
+      return NextResponse.redirect(new URL("/panel/ask", request.url));
     }
   }
 
