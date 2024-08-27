@@ -3,7 +3,7 @@ import { User } from "@/types/user";
 import AddTickets from "@/components/admin/AddTickets";
 import AdminStatus from "./AdminStatus";
 import { BarsArrowUpIcon, UsersIcon } from "@heroicons/react/16/solid";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function Table({ users }: { users: User[] }) {
   const [search, setSearch] = useState("");
@@ -97,7 +97,7 @@ export default function Table({ users }: { users: User[] }) {
                   </th>
                   <th
                     scope="col"
-                    className="relative py-3.5 pl-3 pr-4 sm:pr-0 whitespace-nowrap"
+                    className="py-3.5 pl-3 pr-4 sm:pr-0 whitespace-nowrap"
                   >
                     <span className="sr-only">Edit</span>
                   </th>
@@ -118,7 +118,7 @@ export default function Table({ users }: { users: User[] }) {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <AdminStatus user={user} />
                     </td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                    <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       <a href="#" className="text-blue-800 hover:text-blue-900">
                         <AddTickets id={user.id} firstName={user.first_name} />
                       </a>
