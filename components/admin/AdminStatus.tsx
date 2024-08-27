@@ -27,7 +27,8 @@ const AdminModal = ({ user, setIsModalOpen }: AdminModelProps) => {
     <div className="absolute inset-0 h-dvh w-dvw bg-black/50 flex justify-center items-center z-10">
       <div className="w-full max-w-sm bg-white p-4 rounded-lg z-20">
         <h3 className="font-bold text-lg whitespace-normal">
-          Are you sure you want to make this user an admin?
+          Are you sure you want to make this user an{" "}
+          {user.is_admin ? "attendee" : "admin"}?
         </h3>
         <p className="py-4">This action cannot be undone.</p>
         <div className="flex gap-2">

@@ -12,8 +12,8 @@ const page = async () => {
   const users = result.data as User[];
 
   return (
-    <div className="w-dvw h-dvh p-4">
-      <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-gray-900 w-full">
+    <div className="w-dvw p-4 flex flex-col">
+      <h2 className="text-2xl font-bold leading-9 tracking-tight text-gray-900 w-full h-10">
         Admin Dashboard
       </h2>
       <Table users={users} />

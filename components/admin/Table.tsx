@@ -19,13 +19,13 @@ export default function Table({ users }: { users: User[] }) {
   }, [search, users]);
 
   return (
-    <div className="sm:px-6 lg:px-8 flex-1 overflow-y-auto overflow-x-hidden">
+    <div className="sm:px-6 lg:px-8 flex-1">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold leading-6 text-gray-900">
             Users
           </h1>
-          <p className="mt-2 text-sm text-gray-700">
+          <p className="pt-2 text-sm text-gray-700">
             A list of all attendees at SASICon. Add or remove attendees. Update
             their raffle tickets.
           </p>
@@ -39,7 +39,7 @@ export default function Table({ users }: { users: User[] }) {
         >
           Search names
         </label>
-        <div className="mt-2 flex rounded-md shadow-sm">
+        <div className="pt-2 flex rounded-md shadow-sm">
           <div className="relative flex flex-grow items-stretch focus-within:z-10">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <UsersIcon aria-hidden="true" className="h-5 w-5 text-gray-400" />

@@ -65,6 +65,7 @@ const AddTicketsForm = ({
     if (response.ok) {
       const { message } = await response.json();
       setMessage(message);
+      setOpen(false);
       router.refresh();
     } else {
       setMessage("Error adding tickets");

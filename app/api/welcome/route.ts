@@ -15,21 +15,25 @@ export async function POST(request: NextRequest) {
       .select("*")
       .eq("first_name", firstName)
       .eq("last_name", lastName);
-    if (data && data.length > 0) {
-      return NextResponse.json({ data }, { status: 200 });
-    } else {
-      const newUser = await supabase
+
+    let user = data && data.length > 0 ? data[0] : null;
+
+    if (!user) {
+      const { data: newUser, error: insertError } = await supabase
         .from("users")
         .insert([{ id: userId, first_name: firstName, last_name: lastName, raffle_tickets: 1, wants_certificate: false, workshops: ["conference"], is_admin: false }])
         .select();
-      if (newUser.data && newUser.data.length > 0) {
-        cookies().set("userId", newUser.data[0].id);
-        cookies().set("raffleTickets", newUser.data[0].raffle_tickets.toString());
-        return NextResponse.json({ result: newUser.data[0] }, { status: 201 });
-      } else {
+      
+      if (insertError || !newUser || newUser.length === 0) {
         throw new Error("Failed to insert new user");
       }
+      user = newUser[0];
     }
+
+    cookies().set("userId", user.id);
+    cookies().set("raffleTickets", user.raffle_tickets.toString());
+    return NextResponse.json({ data: user }, { status: user ? 200 : 201 });
+
   } catch (error) {
     console.error("SQL ERROR", error);
     return NextResponse.json({ message: "SQL ERROR", error }, { status: 500 });
