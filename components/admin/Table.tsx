@@ -1,6 +1,7 @@
 import { User } from "@/types/user";
 import AddTickets from "@/components/admin/AddTickets";
 import Link from "next/link";
+import AdminStatus from "./AdminStatus";
 
 export default function Table({ users }: { users: User[] }) {
   return (
@@ -65,7 +66,7 @@ export default function Table({ users }: { users: User[] }) {
                       {user.raffle_tickets}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user.is_admin ? "Admin" : "Attendee"}
+                      <AdminStatus user={user} />
                     </td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       <a href="#" className="text-blue-800 hover:text-blue-900">

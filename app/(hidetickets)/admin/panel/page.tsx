@@ -10,7 +10,7 @@ const page = async () => {
   const panel = result.rows as Panel[];
 
   return (
-    <div className="flex flex-col min-h-dvh flex-1 justify-center px-6 py-12 lg:px-8">
+    <div className="flex flex-col min-h-dvh flex-1 justify-start px-6 py-12 lg:px-8 overflow-y-auto">
       <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-gray-900">
         Admin Panel
       </h2>
