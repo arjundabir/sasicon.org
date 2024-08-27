@@ -2,7 +2,7 @@ import React from "react";
 import { User } from "@/types/user";
 import AdminStatus from "@/components/admin/AdminStatus";
 import AddTickets from "@/components/admin/AddTickets";
-import connectToSupabase from "@/lib/connectToSupabase";
+import supabase from "@/lib/supabase";
 
 interface PageProps {
   params: {
@@ -13,7 +13,6 @@ interface PageProps {
 const page = async ({ params }: PageProps) => {
   const user_id = params.slug[0];
 
-  const supabase = connectToSupabase();
   const result = await supabase.from("users").select("*").eq("id", user_id);
 
   const user = result.data ? (result.data[0] as User) : null;

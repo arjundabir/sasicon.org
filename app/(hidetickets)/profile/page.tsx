@@ -4,13 +4,12 @@ import { HomeIcon } from "@heroicons/react/24/outline";
 import { User } from "@/types/user";
 import Link from "next/link";
 import { Certificate } from "@/types/certificate";
-import connectToSupabase from "@/lib/connectToSupabase";
+import supabase from "@/lib/supabase";
 
 export default async function Example() {
   const cookieStore = cookies();
   const userId = cookieStore.get("userId");
   let user: User | null = null;
-  const supabase = connectToSupabase();
   try {
     const result = await supabase
       .from("users")

@@ -2,12 +2,11 @@ import React from "react";
 import { User } from "@/types/user";
 import Table from "@/components/admin/Table";
 import { unstable_noStore as noStore } from "next/cache";
-import connectToSupabase from "@/lib/connectToSupabase";
+import supabase from "@/lib/supabase";
 
 const page = async () => {
   noStore();
 
-  const supabase = connectToSupabase();
   const result = await supabase.from("users").select("*");
   const users = result.data as User[];
 

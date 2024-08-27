@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { User } from "@/types/user";
-import connectToSupabase from "@/lib/connectToSupabase";
 import {cookies} from "next/headers";
+import supabase from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   const cookieStore = cookies();
 
   const { id, tickets } : {id: string, tickets: string} = await request.json();
-  const supabase = connectToSupabase();
   const result = await supabase.from("users").select("raffle_tickets").eq("id", id);
   if(result.data) {
     const user = result.data[0] as User;

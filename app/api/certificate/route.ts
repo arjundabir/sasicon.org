@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import connectToSupabase from "@/lib/connectToSupabase";
+import supabase from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   const { certificateType, email, country, city, region, postalCode } = await request.json();
@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
   }
   try {
 
-    const supabase = connectToSupabase();
     const result = await supabase.from("certificates").insert({
       user_id: userId.value,
       certificate_type: certificateType,

@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { generateRandomId } from "@/lib/generateId";
-import connectToSupabase from "@/lib/connectToSupabase";
+import supabase from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { firstName, lastName } = body;
   const userId = generateRandomId();
 
-  const supabase = connectToSupabase();
   try {
     const { data, error } = await supabase
       .from("users")

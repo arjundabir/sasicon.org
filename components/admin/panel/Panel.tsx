@@ -1,6 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import type { Panel } from "@/types/panel";
+import supabase from "@/lib/supabase";
 
 const Panel = ({ panel }: { panel: Panel[] | null }) => {
   const handleApproval = async (id: string, isApproved: boolean) => {
@@ -15,6 +16,25 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
       console.log("Failed to update approval status");
     }
   };
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("custom-all-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "panel" },
+        (payload) => {
+          console.log("Change received!", payload);
+        }
+      )
+      .subscribe();
+
+    console.log(channel);
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [supabase]);
 
   return (
     <>

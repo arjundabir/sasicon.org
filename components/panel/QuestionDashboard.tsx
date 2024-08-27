@@ -8,10 +8,10 @@ export default function QuestionDashboard({
   questions: Panel[];
 }) {
   return (
-    <div className="sm:px-6 lg:px-8 flex-1 overflow-y-auto overflow-x-hidden p-6 py-">
+    <div className="sm:px-6 lg:px-8 flex-1 overflow-y-auto overflow-x-hidden p-6 py-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold leading-6 text-gray-900">
+          <h1 className="text-2xl font-semibold leading-6 text-gray-900">
             Questions
           </h1>
           <p className="mt-2 text-sm text-gray-700">

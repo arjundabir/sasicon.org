@@ -3,13 +3,12 @@ import QuestionDashboard from "@/components/panel/QuestionDashboard";
 import { Panel } from "@/types/panel";
 import { cookies } from "next/headers";
 import { unstable_noStore as noStore } from "next/cache";
-import connectToSupabase from "@/lib/connectToSupabase";
+import supabase from "@/lib/supabase";
 
 const page = async () => {
   noStore();
   const cookieStore = cookies();
   const id = cookieStore.get("userId")?.value;
-  const supabase = connectToSupabase();
   const { data, error } = await supabase
     .from("panel")
     .select("*")
