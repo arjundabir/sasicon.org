@@ -4,17 +4,11 @@ import AddTickets from "@/components/admin/AddTickets";
 import AdminStatus from "./AdminStatus";
 import { BarsArrowUpIcon, UsersIcon } from "@heroicons/react/16/solid";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function Table({ users }: { users: User[] }) {
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
-
-  const router = useRouter();
-  useEffect(() => {
-    router.refresh();
-  }, []);
 
   useEffect(() => {
     setFilteredUsers(
@@ -22,7 +16,7 @@ export default function Table({ users }: { users: User[] }) {
         user.first_name.toLowerCase().includes(search.toLowerCase())
       )
     );
-  }, [search]);
+  }, [search, users]);
 
   return (
     <div className="sm:px-6 lg:px-8 flex-1 overflow-y-auto overflow-x-hidden">
