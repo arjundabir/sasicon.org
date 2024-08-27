@@ -7,3 +7,14 @@ export interface User {
   workshops: string[];
   is_admin: boolean;
 }
+
+export interface UserDatabase{
+  public:{
+    Tables :{
+      users:{
+        Row: User
+      }
+      
+    }
+  }
+}

@@ -2,7 +2,7 @@
 import React from "react";
 import type { Panel } from "@/types/panel";
 
-const Panel = ({ panel }: { panel: Panel[] }) => {
+const Panel = ({ panel }: { panel: Panel[] | null }) => {
   const handleApproval = async (id: string, isApproved: boolean) => {
     const response = await fetch(`/api/admin/panel/approval`, {
       method: "POST",
@@ -18,25 +18,26 @@ const Panel = ({ panel }: { panel: Panel[] }) => {
 
   return (
     <>
-      {panel.map((item) => (
-        <div key={item.id}>
-          <p>{item.question}</p>
-          <div className="flex gap-2">
-            <button
-              className="bg-green-500 text-white px-2 py-1 rounded-md"
-              onClick={() => handleApproval(item.user_id, true)}
-            >
-              Approve
-            </button>
-            <button
-              className="bg-red-500 text-white px-2 py-1 rounded-md"
-              onClick={() => handleApproval(item.user_id, false)}
-            >
-              Reject
-            </button>
+      {panel &&
+        panel.map((item) => (
+          <div key={item.id}>
+            <p>{item.question}</p>
+            <div className="flex gap-2">
+              <button
+                className="bg-green-500 text-white px-2 py-1 rounded-md"
+                onClick={() => handleApproval(item.user_id, true)}
+              >
+                Approve
+              </button>
+              <button
+                className="bg-red-500 text-white px-2 py-1 rounded-md"
+                onClick={() => handleApproval(item.user_id, false)}
+              >
+                Reject
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </>
   );
 };

@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@vercel/postgres";
+import connectToSupabase from "@/lib/connectToSupabase";
 
 export async function POST(req: NextRequest) {
   const { id } = await req.json();
-  const result = await sql`SELECT * FROM panel WHERE id = ${id}`;
-  const question = result.rows[0];
-  console.log(question);
-  return NextResponse.json({question}, { status: 200 });
+  const supabase = connectToSupabase();
+  const result = await supabase.from("panel").select("*").eq("id", id);
+  if(result.data) {
+    const question = result.data[0];
+    return NextResponse.json({question}, { status: 200 });
+  }
+  return NextResponse.json({message: "Question not found"}, { status: 404 });
 }

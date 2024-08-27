@@ -1,8 +1,8 @@
 import React from "react";
-import { sql } from "@vercel/postgres";
 import { User } from "@/types/user";
 import AdminStatus from "@/components/admin/AdminStatus";
 import AddTickets from "@/components/admin/AddTickets";
+import connectToSupabase from "@/lib/connectToSupabase";
 
 interface PageProps {
   params: {
@@ -13,11 +13,10 @@ interface PageProps {
 const page = async ({ params }: PageProps) => {
   const user_id = params.slug[0];
 
-  const result = await sql`
-    SELECT * FROM users 
-    WHERE id = ${user_id}`;
+  const supabase = connectToSupabase();
+  const result = await supabase.from("users").select("*").eq("id", user_id);
 
-  const user = result.rows[0] as User;
+  const user = result.data ? (result.data[0] as User) : null;
   return (
     <div className="p-6 ">
       <h1 className="text-2xl font-bold mb-4">User Information</h1>

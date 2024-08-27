@@ -1,20 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@vercel/postgres";
 import { cookies } from "next/headers";
-import { User } from "@/types/user";
 import { generateRandomId } from "@/lib/generateId";
-import { createClient } from "@supabase/supabase-js";
+import connectToSupabase from "@/lib/connectToSupabase";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { firstName, lastName } = body;
   const userId = generateRandomId();
 
-  const supabase = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_KEY!
-  );
-
+  const supabase = connectToSupabase();
   try {
     const { data, error } = await supabase
       .from("users")

@@ -1,27 +1,37 @@
 import React from "react";
-import { sql } from "@vercel/postgres";
 import { cookies } from "next/headers";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { User } from "@/types/user";
 import Link from "next/link";
 import { Certificate } from "@/types/certificate";
+import connectToSupabase from "@/lib/connectToSupabase";
 
 export default async function Example() {
   const cookieStore = cookies();
   const userId = cookieStore.get("userId");
   let user: User | null = null;
+  const supabase = connectToSupabase();
   try {
-    const result = await sql`SELECT * FROM users WHERE id = ${userId?.value}`;
-    user = result.rows[0] as User;
+    const result = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", userId?.value);
+    if (result.data) {
+      user = result.data[0] as User;
+    }
   } catch (error) {
     console.log(error);
   }
 
   let certificate: Certificate | undefined = undefined;
   try {
-    const result =
-      await sql`SELECT * FROM certificates WHERE user_id = ${userId?.value}`;
-    certificate = result.rows[0] as Certificate;
+    const result = await supabase
+      .from("certificates")
+      .select("*")
+      .eq("user_id", userId?.value);
+    if (result.data) {
+      certificate = result.data[0] as Certificate;
+    }
   } catch (error) {
     console.log(error);
   }

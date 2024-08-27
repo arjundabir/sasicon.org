@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@vercel/postgres";
+import connectToSupabase from "@/lib/connectToSupabase";
 
 export async function POST(req: NextRequest) {
+  
   const { id, isApproved } = await req.json();
-  const result = await sql`UPDATE panel SET is_approved = ${isApproved} WHERE id = ${id}`;
+  const supabase = connectToSupabase();
+  const result = await supabase.from("panel").update({ is_approved: isApproved }).eq("id", id);
   return NextResponse.json(result, { status: 200 });
 }

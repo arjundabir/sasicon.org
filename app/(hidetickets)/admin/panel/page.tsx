@@ -1,13 +1,17 @@
 import React from "react";
-import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from "next/cache";
 import Panel from "@/components/admin/panel/Panel";
+import connectToSupabase from "@/lib/connectToSupabase";
 
 const page = async () => {
   noStore();
+  const supabase = connectToSupabase();
 
-  const result = await sql`SELECT * FROM panel WHERE is_approved IS NULL`;
-  const panel = result.rows as Panel[];
+  const result = await supabase
+    .from("panel")
+    .select("*")
+    .eq("is_approved", null);
+  const panel = result.data ? (result.data[0] as Panel[]) : null;
 
   return (
     <div className="flex flex-col min-h-dvh flex-1 justify-start px-6 py-12 lg:px-8 overflow-y-auto">

@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers';
 import { User } from './types/user';
 import { createClient } from '@supabase/supabase-js';
+import connectToSupabase from './lib/connectToSupabase';
  
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies()
@@ -20,10 +21,7 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to home if user is not admin
   if(request.nextUrl.pathname === "/admin"){
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
-    );
+    const supabase = connectToSupabase();
     const { data, error } = await supabase
       .from("users")
       .select("*")
@@ -39,10 +37,7 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to certificate if user is not enrolled
   if(request.nextUrl.pathname === "/certificate"){
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
-    );
+    const supabase = connectToSupabase();
     const { data, error } = await supabase
       .from("certificates")
       .select("*")
@@ -54,16 +49,13 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to ask question if user has not asked a question
   if (request.nextUrl.pathname === "/panel"){
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
-    );
+    const supabase = connectToSupabase();
     const { data, error } = await supabase
       .from("panel")
       .select("*")
       .eq("user_id", userId?.value);
-    if (data && data.length > 0) {
-      return NextResponse.redirect(new URL("/", request.url));
+    if (data && data.length < 1) {
+      return NextResponse.redirect(new URL("/panel/ask", request.url));
     }
   }
 }

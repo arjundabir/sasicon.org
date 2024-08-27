@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { XCircleIcon } from "@heroicons/react/16/solid";
 
 interface SubmitQuestionProps {
   id: string;
@@ -8,6 +9,7 @@ interface SubmitQuestionProps {
 
 const SubmitQuestion = ({ id }: SubmitQuestionProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,16 +25,16 @@ const SubmitQuestion = ({ id }: SubmitQuestionProps) => {
       body: JSON.stringify({ id, question }),
     });
     if (!response.ok) {
-      throw new Error("Failed to submit question");
+      setError("Failed to submit question");
+      setIsLoading(false);
+    } else {
+      router.push("/panel");
     }
-    const { newQuestion } = await response.json();
-
-    // Redirect to /panel after submission
-    router.push("/panel");
   };
 
   return (
     <form className="mt-6" onSubmit={handleSubmit}>
+      {error && <ErrorMessage error={error} />}
       <div>
         <label
           htmlFor="question"
@@ -61,3 +63,18 @@ const SubmitQuestion = ({ id }: SubmitQuestionProps) => {
 };
 
 export default SubmitQuestion;
+
+export function ErrorMessage({ error }: { error: string }) {
+  return (
+    <div className="rounded-md bg-red-50 p-4">
+      <div className="flex">
+        <div className="flex-shrink-0">
+          <XCircleIcon aria-hidden="true" className="h-5 w-5 text-red-400" />
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-red-800">{error}</h3>
+        </div>
+      </div>
+    </div>
+  );
+}
