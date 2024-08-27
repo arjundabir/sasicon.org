@@ -4,10 +4,17 @@ import AddTickets from "@/components/admin/AddTickets";
 import AdminStatus from "./AdminStatus";
 import { BarsArrowUpIcon, UsersIcon } from "@heroicons/react/16/solid";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Table({ users }: { users: User[] }) {
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+
+  const router = useRouter();
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
   useEffect(() => {
     setFilteredUsers(
@@ -107,21 +114,25 @@ export default function Table({ users }: { users: User[] }) {
                 {filteredUsers.map((user, index) => (
                   <tr key={index}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                      {user.first_name}
+                      <Link
+                        href={`/admin/${user.id}`}
+                        className="underline text-blue-800"
+                      >
+                        {user.first_name}
+                      </Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {user.last_name}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {user.raffle_tickets}
+                      <AddTickets
+                        id={user.id}
+                        firstName={user.first_name}
+                        raffle_tickets={user.raffle_tickets}
+                      />
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <AdminStatus user={user} />
-                    </td>
-                    <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <a href="#" className="text-blue-800 hover:text-blue-900">
-                        <AddTickets id={user.id} firstName={user.first_name} />
-                      </a>
                     </td>
                   </tr>
                 ))}

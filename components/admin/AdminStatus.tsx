@@ -37,7 +37,10 @@ const AdminModal = ({ user, setIsModalOpen }: AdminModelProps) => {
           >
             Yes
           </button>
-          <button className="bg-red-500 text-white px-4 py-2 rounded-md">
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="bg-red-500 text-white px-4 py-2 rounded-md"
+          >
             No
           </button>
         </div>
@@ -53,10 +56,7 @@ const AdminStatus = ({ user }: AdminStatusProps) => {
       {isModalOpen && (
         <AdminModal user={user} setIsModalOpen={setIsModalOpen} />
       )}
-      <button
-        className="text-blue-800 hover:text-blue-900"
-        onClick={() => setIsModalOpen(true)}
-      >
+      <button className="text-blue-800 " onClick={() => setIsModalOpen(true)}>
         {user.is_admin ? "Admin" : "Attendee"}
       </button>
     </>

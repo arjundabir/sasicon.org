@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   const newTickets = currentTickets + Number(tickets);
   try {
     await sql`UPDATE users SET raffle_tickets = ${newTickets} WHERE id = ${id}`;
-    return NextResponse.json({ message: "Tickets added" }, { status: 200 });
+    return NextResponse.json({ message: "Tickets added " }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error adding tickets" }, { status: 500 });
   }

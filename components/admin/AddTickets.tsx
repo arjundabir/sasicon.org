@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 interface AddTicketsProps {
   id: string;
   firstName: string;
+  raffle_tickets: number;
 }
-const AddTickets = ({ id, firstName }: AddTicketsProps) => {
+const AddTickets = ({ id, firstName, raffle_tickets }: AddTicketsProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -15,9 +16,16 @@ const AddTickets = ({ id, firstName }: AddTicketsProps) => {
   };
   return (
     <>
-      <button onClick={handleClick}>Add Tickets</button>
+      <button onClick={handleClick} className="text-blue-800">
+        {raffle_tickets}
+      </button>
       {open && (
-        <AddTicketsForm setOpen={setOpen} id={id} firstName={firstName} />
+        <AddTicketsForm
+          setOpen={setOpen}
+          id={id}
+          firstName={firstName}
+          raffle_tickets={raffle_tickets}
+        />
       )}
     </>
   );
@@ -29,8 +37,14 @@ interface AddTicketsFormProps {
   setOpen: (open: boolean) => void;
   id: string;
   firstName: string;
+  raffle_tickets: number;
 }
-const AddTicketsForm = ({ setOpen, id, firstName }: AddTicketsFormProps) => {
+const AddTicketsForm = ({
+  setOpen,
+  id,
+  firstName,
+  raffle_tickets,
+}: AddTicketsFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
 
@@ -41,26 +55,19 @@ const AddTicketsForm = ({ setOpen, id, firstName }: AddTicketsFormProps) => {
     setIsLoading(true);
     const formData = new FormData(e.target as HTMLFormElement);
     const tickets = formData.get("tickets") as unknown as number;
-    try {
-      const response = await fetch("/api/admin/tickets", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, tickets }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add tickets");
-      }
+    const response = await fetch("/api/admin/tickets", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id, tickets, raffle_tickets }),
+    });
+    if (response.ok) {
       const { message } = await response.json();
       setMessage(message);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setOpen(false);
       router.refresh();
+    } else {
+      setMessage("Error adding tickets");
     }
   };
 
