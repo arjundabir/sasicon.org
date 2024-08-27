@@ -1,6 +1,7 @@
 import { Panel } from "@/types/panel";
 import EditQuestionButton from "./EditQuestionButton";
 import Link from "next/link";
+import QuestionTableBody from "./QuestionTableBody";
 
 export default function QuestionDashboard({
   questions,
@@ -48,28 +49,7 @@ export default function QuestionDashboard({
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
-                {questions.map((question, index) => (
-                  <tr key={index}>
-                    <td className="whitespace-normal py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                      {question.question}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {question.is_approved === null
-                        ? "Pending"
-                        : question.is_approved === true
-                        ? "Yes"
-                        : "No"}
-                    </td>
-                    <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <EditQuestionButton
-                        id={question.id}
-                        user_id={question.user_id}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+              <QuestionTableBody initialQuestions={questions} />
             </table>
           </div>
         </div>

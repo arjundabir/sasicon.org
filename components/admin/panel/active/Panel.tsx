@@ -44,6 +44,26 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
     }
   };
 
+  const handleRead = async (id: number) => {
+    const response = await fetch(`/api/admin/panel/read`, {
+      method: "POST",
+      body: JSON.stringify({ id, status: "Asked" }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setDynamicPanel((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, status: "Asked" } : item
+        )
+      );
+    } else {
+      console.log("Failed to mark as read");
+    }
+  };
+
   useEffect(() => {
     const channel = supabase
       .channel("custom-all-channel")
@@ -76,58 +96,27 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
     };
   }, [supabase]);
 
+  const lastApprovedQuestion = dynamicPanel
+    .filter((item) => item.status === "Approved")
+    .slice(-1)[0];
+
   return (
-    <>
-      {dynamicPanel &&
-        dynamicPanel.map((item) => (
-          <div key={item.id} className="flex flex-col gap-2">
-            {editingId === String(item.id) ? (
-              <textarea
-                value={editText}
-                onChange={(e) => setEditText(e.target.value)}
-                onBlur={() => handleEdit(String(item.id), editText)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleEdit(String(item.id), editText);
-                }}
-                className="border border-gray-300 rounded-md w-full p-2"
-              />
-            ) : (
-              <p
-                onDoubleClick={() => {
-                  setEditingId(String(item.id));
-                  setEditText(item.question);
-                }}
-                className="border border-gray-300 rounded-md p-2"
-              >
-                {item.question}
-              </p>
-            )}
-            <div className="flex gap-2">
-              <button
-                className="bg-green-500 text-white px-2 py-1 rounded-md"
-                onClick={() => handleApproval(item.id, "Approved")}
-              >
-                Approve
-              </button>
-              <button
-                className="bg-red-500 text-white px-2 py-1 rounded-md"
-                onClick={() => handleApproval(item.id, "Rejected")}
-              >
-                Reject
-              </button>
-              <button
-                className="bg-blue-500 text-white px-2 py-1 rounded-md"
-                onClick={() => {
-                  setEditingId(String(item.id));
-                  setEditText(item.question);
-                }}
-              >
-                Modify
-              </button>
-            </div>
-          </div>
-        ))}
-    </>
+    <div className="flex flex-col items-center justify-center h-screen">
+      {lastApprovedQuestion && (
+        <div key={lastApprovedQuestion.id} className="flex flex-col gap-2">
+          <p className="border border-gray-300 rounded-md p-2">
+            {lastApprovedQuestion.question}
+          </p>
+          <button
+            className="bg-blue-500 text-white px-2 py-1 rounded-md self-end"
+            onClick={() => handleRead(lastApprovedQuestion.id)}
+            style={{ position: "absolute", bottom: "10px", right: "10px" }}
+          >
+            Read
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
 

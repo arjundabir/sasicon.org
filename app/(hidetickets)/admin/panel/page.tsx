@@ -5,6 +5,7 @@ import supabase from "@/lib/supabase";
 
 const page = async () => {
   noStore();
+
   const result = await supabase.from("panel").select("*");
   const panel = result.data ? (result.data as Panel[]) : null;
 

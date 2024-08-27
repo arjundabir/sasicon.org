@@ -5,7 +5,7 @@ import supabase from "@/lib/supabase";
 export async function POST(req: NextRequest) {
   noStore();
 
-  const { id, isApproved } = await req.json();
-  const result = await supabase.from("panel").update({ is_approved: isApproved }).eq("id", id);
+  const { id, status } = await req.json();
+  const result = await supabase.from("panel").update({ status }).eq("id", id);
   return NextResponse.json(result, { status: 200 });
 }
