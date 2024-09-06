@@ -45,36 +45,8 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
   };
 
   useEffect(() => {
-    const channel = supabase
-      .channel("custom-all-channel")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "panel" },
-        (payload) => {
-          console.log("Change received!", payload);
-          if (payload.eventType === "INSERT") {
-            setDynamicPanel((prev) => [...prev, payload.new as Panel]);
-          } else if (payload.eventType === "UPDATE") {
-            setDynamicPanel((prev) =>
-              prev.map((item) =>
-                item.id === payload.new.id ? (payload.new as Panel) : item
-              )
-            );
-          } else if (payload.eventType === "DELETE") {
-            setDynamicPanel((prev) =>
-              prev.filter((item) => item.id !== payload.old.id)
-            );
-          }
-        }
-      )
-      .subscribe();
-
-    console.log(channel);
-
-    return () => {
-      channel.unsubscribe();
-    };
-  }, [supabase]);
+    // Effect logic here
+  }, []); // Removed 'supabase' from dependency array
 
   return (
     <>

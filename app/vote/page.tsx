@@ -16,31 +16,40 @@ const Page = () => {
     { id: 4, color: "bg-green-100" },
   ];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = itemRefs.current.indexOf(
-              entry.target as HTMLDivElement
-            );
-            setCurrentIndex(index);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
+  useEffect(
+    () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const index = itemRefs.current.indexOf(
+                entry.target as HTMLDivElement
+              );
+              setCurrentIndex(index);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
 
-    itemRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
+      const currentItemRefs = itemRefs.current; // Copy itemRefs.current to a variable
 
-    return () => {
-      itemRefs.current.forEach((ref) => {
-        if (ref) observer.unobserve(ref);
+      currentItemRefs.forEach((ref) => {
+        if (ref) observer.observe(ref);
       });
-    };
-  }, []);
+
+      return () => {
+        if (currentItemRefs) {
+          currentItemRefs.forEach((ref) => {
+            if (ref) observer.unobserve(ref);
+          });
+        }
+      };
+    },
+    [
+      /* dependencies */
+    ]
+  );
 
   const handleSelect = () => {
     if (currentIndex !== null && !selectedItems.includes(currentIndex)) {

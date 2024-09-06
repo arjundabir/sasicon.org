@@ -30,7 +30,7 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
       };
       fetchUser();
     }
-  }, [open]);
+  }, [open, userId]);
 
   // Swipe detection
   useEffect(() => {
