@@ -5,7 +5,7 @@ import supabase from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { firstName, lastName } = body;
+  const { firstName, lastName, email } = body; // Updated line
   const userId = generateRandomId();
 
   try {
@@ -13,14 +13,15 @@ export async function POST(request: NextRequest) {
       .from("users")
       .select("*")
       .eq("first_name", firstName)
-      .eq("last_name", lastName);
+      .eq("last_name", lastName)
+      .eq("email", email); // Updated line
 
     let user = data && data.length > 0 ? data[0] : null;
 
     if (!user) {
       const { data: newUser, error: insertError } = await supabase
         .from("users")
-        .insert([{ id: userId, first_name: firstName, last_name: lastName, raffle_tickets: 1, wants_certificate: false, workshops: ["conference"], is_admin: false }])
+        .insert([{ id: userId, first_name: firstName, last_name: lastName, email, raffle_tickets: 1, wants_certificate: false, workshops: ["conference"], is_admin: false, food_tickets: 1 }]) // Updated line
         .select();
       
       if (insertError || !newUser || newUser.length === 0) {

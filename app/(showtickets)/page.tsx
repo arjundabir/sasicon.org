@@ -10,7 +10,6 @@ export default function Home({ searchParams }: HomeProps) {
   return (
     <main className={styles.background}>
       <Hero />
-      <Drawer />
     </main>
   );
 }

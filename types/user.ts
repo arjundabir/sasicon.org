@@ -6,6 +6,9 @@ export interface User {
   wants_certificate: boolean;
   workshops: string[];
   is_admin: boolean;
+  school_email: string;
+  food_tickets: number;
+  checked_in: Date;
 }
 
 export interface UserDatabase{

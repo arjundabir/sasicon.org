@@ -7,19 +7,30 @@ import {
   DialogPanel,
   TransitionChild,
 } from "@headlessui/react";
-import { HeartIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  ArrowTopRightOnSquareIcon,
-  PencilIcon,
-  PlusIcon,
-  StarIcon,
-} from "@heroicons/react/20/solid";
-import Image from "next/image";
-import Logo from "@/public/logo.png";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { MinusIcon } from "@heroicons/react/24/solid"; // Assuming you have a BeanIcon
+import { User } from "@/types/user";
 
-export default function Drawer() {
-  const [open, setOpen] = useState(true);
+export default function Drawer({ userId }: { userId: string | undefined }) {
+  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    if (open) {
+      const fetchUser = async () => {
+        const res = await fetch("/api/user", {
+          method: "POST",
+          body: JSON.stringify({ id: userId }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.data[0]);
+        }
+      };
+      fetchUser();
+    }
+  }, [open]);
 
   // Swipe detection
   useEffect(() => {
@@ -43,6 +54,18 @@ export default function Drawer() {
       window.removeEventListener("touchend", handleSwipe);
     };
   }, []);
+
+  const formatTime = (time: String) => {
+    if (time) {
+      const match = time.match(/^(\d{2}):(\d{2}):\d{2}/);
+      if (match) {
+        let [_, hours, minutes] = match;
+        const period = parseInt(hours) >= 12 ? "PM" : "AM";
+        hours = (parseInt(hours) % 12 || 12).toString().padStart(2, "0");
+        return `${hours}:${minutes} ${period}`;
+      }
+    }
+  };
 
   return (
     <>
@@ -86,7 +109,7 @@ export default function Drawer() {
                         <div>
                           <h2 className="text-base font-semibold leading-6 text-gray-900">
                             <span className="sr-only">Details for </span>
-                            Hey Arjun Dabir,
+                            Hey {user?.first_name} {user?.last_name},
                           </h2>
                           <p className="text-sm font-medium text-gray-500">
                             Welcome to SASICon 2024!
@@ -99,20 +122,35 @@ export default function Drawer() {
                       <dl className="mt-2 divide-y divide-gray-200 border-b border-t border-gray-200">
                         <div className="flex justify-between py-3 text-sm font-medium">
                           <dt className="text-gray-500">Raffle Tickets:</dt>
-                          <dd className="text-gray-900">1</dd>
+                          <dd className="text-gray-900">
+                            {user?.raffle_tickets}
+                          </dd>
                         </div>
                         <div className="flex justify-between py-3 text-sm font-medium">
                           <dt className="text-gray-500">Food Tickets:</dt>
-                          <dd className="text-gray-900">1</dd>
+                          <dd className="text-gray-900">
+                            {user?.food_tickets}
+                          </dd>
                         </div>
                         <div className="flex justify-between py-3 text-sm font-medium">
                           <dt className="text-gray-500">Checked in:</dt>
-                          <dd className="text-gray-900">June 8, 2020</dd>
+                          <dd className="text-gray-900">
+                            {user?.checked_in
+                              ? new Date(user.checked_in).toLocaleTimeString(
+                                  "en-US",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    timeZone: "America/Los_Angeles",
+                                  }
+                                )
+                              : "Not checked in"}
+                          </dd>
                         </div>
                       </dl>
                     </div>
 
-                    <section className="">
+                    <section>
                       <h2 className="text-base font-semibold leading-6 text-gray-900">
                         Upcoming events
                       </h2>

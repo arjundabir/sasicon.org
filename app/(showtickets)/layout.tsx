@@ -1,4 +1,4 @@
-import Button from "@/components/tickets/Button";
+import Drawer from "@/components/tickets/Drawer";
 import { cookies } from "next/headers";
 
 export default function RootLayout({
@@ -6,11 +6,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const tickets = cookies().get("raffleTickets");
+  const userId = cookies().get("userId")?.value;
   return (
     <main>
       {children}
-      <Button tickets={tickets?.value as string} />
+      <Drawer userId={userId} />
     </main>
   );
 }

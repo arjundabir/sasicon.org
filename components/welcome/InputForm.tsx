@@ -6,7 +6,7 @@ import { User } from "@/types/user";
 
 const InputForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [statusCode, setStatusCode] = useState(201);
+  const [statusCode, setStatusCode] = useState(0);
   const [user, setUser] = useState<User | null>(null);
 
   const router = useRouter();
@@ -24,17 +24,27 @@ const InputForm = () => {
       ?.toString()
       .toLowerCase()
       .replace(/^\w/, (c) => c.toUpperCase()) as string;
+    const email = formData.get("email")?.toString() as string;
+
+    // Email validation
+    if (!email.endsWith("@uci.edu")) {
+      setStatusCode(400);
+      setIsLoading(false);
+      return;
+    } else {
+      const response = await fetch("/api/welcome", {
+        method: "POST",
+        body: JSON.stringify({ firstName, lastName, email }),
+      });
+      const { result }: { result: User } = await response.json();
+      setStatusCode(response.status);
+      setUser(result);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setIsLoading(false);
+      router.push("/");
+    }
+
     setIsLoading(true);
-    const response = await fetch("/api/welcome", {
-      method: "POST",
-      body: JSON.stringify({ firstName, lastName }),
-    });
-    const { result }: { result: User } = await response.json();
-    setStatusCode(response.status);
-    setUser(result);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    setIsLoading(false);
-    router.push("/");
   };
   return (
     <>
@@ -77,6 +87,28 @@ const InputForm = () => {
               type="text"
               required
               autoComplete="family-name"
+              className="block w-full pl-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-blue-800 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
+
+        <div>
+          {" "}
+          {/* New email input field */}
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            School Email
+          </label>
+          <div className="mt-2">
+            <input
+              disabled={isLoading}
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
               className="block w-full pl-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-blue-800 sm:text-sm sm:leading-6"
             />
           </div>

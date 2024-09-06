@@ -8,7 +8,7 @@ export default function Hero() {
     <div className="flex flex-col justify-between h-full py-8 px-4 overflow-clip">
       <div className="mt-8">
         <Image src={SASI} alt="SASI" className="w-24" />
-        <h2 className="text-4xl text-white ">SASI presents:</h2>
+        <h2 className="text-3xl text-white ">SASI presents:</h2>
         <h1 className="text-5xl text-white font-medium w-full">SASICon 2024</h1>
       </div>
       <div className="">
