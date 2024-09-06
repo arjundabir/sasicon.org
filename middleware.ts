@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { cookies } from 'next/headers';
 import { User } from './types/user';
 import supabase from './lib/supabase';
+import getUserId from './lib/get-userid';
  
 export async function middleware(request: NextRequest) {
-  const cookieStore = cookies()
-  const userId = cookieStore.get("userId");
+  const userId = getUserId();
 
 // Redirect to home if user is already logged in
   if (userId && request.nextUrl.pathname === '/welcome') {
@@ -54,4 +53,17 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/panel/ask", request.url));
     }
   }
+
+  // Redirect to food if user has food tickets
+  if(request.nextUrl.pathname === "/food"){
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", userId?.value);
+    if (!(data && data.length > 0 && data[0].food_tickets > 0)) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  return NextResponse.next();
 }
