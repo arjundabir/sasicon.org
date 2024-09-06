@@ -5,7 +5,7 @@ import SASI from "@/public/logo.png";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col justify-between h-full py-8 px-4">
+    <div className="flex flex-col justify-between h-full py-8 px-4 overflow-clip">
       <div className="mt-8">
         <Image src={SASI} alt="SASI" className="w-24" />
         <h2 className="text-4xl text-white ">SASI presents:</h2>

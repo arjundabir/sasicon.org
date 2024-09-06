@@ -3,7 +3,7 @@ import Input from "@/components/welcome/Input";
 
 const page = () => {
   return (
-    <div className="w-dvw h-dvh">
+    <div className="w-dvw h-dvh ">
       <Input />
     </div>
   );
