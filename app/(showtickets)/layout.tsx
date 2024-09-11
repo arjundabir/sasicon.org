@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <main>
       {children}
-      <Drawer userId={userId} />
+      {userId && <Drawer userId={userId} />}
     </main>
   );
 }

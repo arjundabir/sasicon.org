@@ -11,7 +11,7 @@ export default function Hero() {
         <h2 className="text-3xl text-white ">SASI presents:</h2>
         <h1 className="text-5xl text-white font-medium w-full">SASICon 2024</h1>
       </div>
-      <div className="">
+      <div>
         <h2 className=" text-white ">Presented by:</h2>
         <Image src={OVPTL} alt="OVPTL" className="w-1/2 max-w-xs" />
         <Image src={NCFSCE} alt="NCFSCE" className="w-1/2 max-w-xs" />

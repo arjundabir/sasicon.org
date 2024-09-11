@@ -11,6 +11,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { MinusIcon } from "@heroicons/react/24/solid"; // Assuming you have a BeanIcon
 import { User } from "@/types/user";
+import Schedule from "./Schedule";
 
 export default function Drawer({ userId }: { userId: string | undefined }) {
   const [open, setOpen] = useState(false);
@@ -102,106 +103,71 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
                     </button>
                   </div>
                 </TransitionChild>
-                <div className="h-full overflow-y-auto bg-white p-8">
-                  <div className="space-y-6 pb-16">
-                    <div>
-                      <div className="mt-4 flex items-start justify-between">
-                        <div>
-                          <h2 className="text-base font-semibold leading-6 text-gray-900">
-                            <span className="sr-only">Details for </span>
-                            Hey {user?.first_name} {user?.last_name},
-                          </h2>
-                          <p className="text-sm font-medium text-gray-500">
-                            Welcome to SASICon 2024!
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-gray-900">Information</h3>
-                      <dl className="mt-2 divide-y divide-gray-200 border-b border-t border-gray-200">
-                        <div className="flex justify-between py-3 text-sm font-medium">
-                          <dt className="text-gray-500">Raffle Tickets:</dt>
-                          <dd className="text-gray-900">
-                            {user?.raffle_tickets}
-                          </dd>
-                        </div>
-                        <div className="flex justify-between py-3 text-sm font-medium">
-                          <dt className="text-gray-500">Food Tickets:</dt>
-                          <dd className="text-gray-900">
-                            {user?.food_tickets}
-                          </dd>
-                        </div>
-                        <div className="flex justify-between py-3 text-sm font-medium">
-                          <dt className="text-gray-500">Checked in:</dt>
-                          <dd className="text-gray-900">
-                            {user?.checked_in
-                              ? new Date(user.checked_in).toLocaleTimeString(
-                                  "en-US",
-                                  {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    timeZone: "America/Los_Angeles",
-                                  }
-                                )
-                              : "Not checked in"}
-                          </dd>
-                        </div>
-                      </dl>
-                    </div>
-
-                    <section>
-                      <h2 className="text-base font-semibold leading-6 text-gray-900">
-                        Upcoming events
-                      </h2>
-                      <ol className="mt-2 divide-y divide-gray-200 text-sm leading-6 text-gray-500">
-                        <li className="py-4 sm:flex">
-                          <p className="w-full flex-none">
-                            <time dateTime="2024-09-28T10:30">10:30 AM</time> -{" "}
-                            <time dateTime="2024-09-28T11:00">11:00 AM</time>
-                          </p>
-                          <p className="mt-2 flex-auto font-semibold text-gray-900 sm:mt-0">
-                            Check-in.
-                          </p>
-                        </li>
-                        <li className="py-4 sm:flex">
-                          <p className="w-full flex-none">All day</p>
-                          <p className="mt-2 flex-auto font-semibold text-gray-900 sm:mt-0">
-                            Event #1.
-                          </p>
-                        </li>
-                        <li className="py-4 sm:flex">
-                          <p className="w-full flex-none">
-                            <time dateTime="2024-09-28T10:00">10:00 AM</time> -{" "}
-                            <time dateTime="2024-09-28T10:15">10:15 AM</time>
-                          </p>
-                          <p className="mt-2 flex-auto font-semibold text-gray-900 sm:mt-0">
-                            Event #2.
-                          </p>
-                        </li>
-                      </ol>
-                    </section>
-                    <div>
-                      <h3 className="font-medium text-gray-900">To Do:</h3>
-                      <div className="mt-2 flex items-center justify-between">
-                        <p className="text-sm italic text-gray-500">
-                          Vote your favorite art piece!
+                <div className="max-h-screen bg-white p-8 flex flex-col gap-y-6">
+                  <div className="flex-1">
+                    <div className="mt-4 flex items-start justify-between">
+                      <div>
+                        <h2 className="text-base font-semibold leading-6 text-gray-900">
+                          <span className="sr-only">Details for </span>
+                          Hey {user?.first_name} {user?.last_name},
+                        </h2>
+                        <p className="text-sm font-medium text-gray-500">
+                          Welcome to SASICon 2024!
                         </p>
-                        <button
-                          type="button"
-                          className="relative -mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        >
-                          <span className="absolute -inset-1.5" />
-                          <ArrowTopRightOnSquareIcon
-                            aria-hidden="true"
-                            className="h-5 w-5"
-                          />
-                          <span className="sr-only">Add description</span>
-                        </button>
                       </div>
                     </div>
                   </div>
-                  <div className="flex">
+                  <div className="flex-1">
+                    <h3 className="font-medium text-gray-900">Information</h3>
+                    <dl className="mt-2 divide-y divide-gray-200 border-b border-t border-gray-200">
+                      <div className="flex justify-between py-3 text-sm font-medium">
+                        <dt className="text-gray-500">Raffle Tickets:</dt>
+                        <dd className="text-gray-900">
+                          {user?.raffle_tickets}
+                        </dd>
+                      </div>
+                      <div className="flex justify-between py-3 text-sm font-medium">
+                        <dt className="text-gray-500">Food Tickets:</dt>
+                        <dd className="text-gray-900">{user?.food_tickets}</dd>
+                      </div>
+                      <div className="flex justify-between py-3 text-sm font-medium">
+                        <dt className="text-gray-500">Checked in:</dt>
+                        <dd className="text-gray-900">
+                          {user?.checked_in
+                            ? new Date(user.checked_in).toLocaleTimeString(
+                                "en-US",
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  timeZone: "America/Los_Angeles",
+                                }
+                              )
+                            : "Not checked in"}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <Schedule />
+                  <div>
+                    <h3 className="font-medium text-gray-900">To Do:</h3>
+                    <div className="mt-2 flex items-center justify-between">
+                      <p className="text-sm italic text-gray-500">
+                        Vote your favorite art piece!
+                      </p>
+                      <button
+                        type="button"
+                        className="relative -mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      >
+                        <span className="absolute -inset-1.5" />
+                        <ArrowTopRightOnSquareIcon
+                          aria-hidden="true"
+                          className="h-5 w-5"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div id="contact-us" className="flex">
                     <a
                       href="mailto:sasiatuci@gmail.com"
                       className="flex-1 rounded-md text-center bg-blue-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
