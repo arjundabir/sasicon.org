@@ -33,7 +33,7 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
       const data = await response.json();
       setDynamicPanel((prev) =>
         prev.map((item) =>
-          item.id === Number(id)
+          item.id === id
             ? { ...item, question: newQuestion, status: "Modified" }
             : item
         )
@@ -44,7 +44,7 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
     }
   };
 
-  const handleRead = async (id: number) => {
+  const handleRead = async (id: string) => {
     const response = await fetch(`/api/admin/panel/read`, {
       method: "POST",
       body: JSON.stringify({ id, status: "Asked" }),
