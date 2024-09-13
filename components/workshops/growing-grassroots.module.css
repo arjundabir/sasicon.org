@@ -1,0 +1,27 @@
+.background {
+  background-image: url("/growing-grassroots/bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100dvh;
+  width: 100dvw;
+  position: relative;
+  z-index: 0;
+  overflow-y: hidden;
+}
+
+.background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.33);
+  z-index: -1;
+}
+
+.background::after {
+  opacity: 100%;
+}

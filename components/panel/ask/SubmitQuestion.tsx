@@ -28,7 +28,9 @@ const SubmitQuestion = ({ id }: SubmitQuestionProps) => {
       setError("Failed to submit question");
       setIsLoading(false);
     } else {
-      router.push("/panel");
+      setTimeout(() => {
+        router.push("/panel");
+      }, 2000);
     }
   };
 

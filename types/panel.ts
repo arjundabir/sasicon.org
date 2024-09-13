@@ -1,5 +1,5 @@
 export interface Panel {
-    id: number;
+    id: string;
     user_id: string;
     question: string;
     status: "Pending" | "Approved" | "Rejected" | "Modified" | "Asked" | null;

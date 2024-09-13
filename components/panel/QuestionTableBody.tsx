@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Panel } from "@/types/panel";
 import supabase from "@/lib/supabase";
+import QuestionCard from "./QuestionCard";
+import useReloadWhenOnline from "@/utils/reload-when-online";
 
 const QuestionTableBody = ({
   initialQuestions,
@@ -17,14 +19,14 @@ const QuestionTableBody = ({
       method: "POST",
       body: JSON.stringify({ id, newQuestion, status: "Pending" }),
       headers: {
-        "Content-Type": "application/json", // Added header
+        "Content-Type": "application/json",
       },
     });
     if (response.ok) {
       const data = await response.json();
       setQuestions((prev) =>
         prev.map((item) =>
-          item.id === Number(id)
+          item.id === id
             ? { ...item, question: newQuestion, status: "Pending" }
             : item
         )
@@ -44,10 +46,20 @@ const QuestionTableBody = ({
       },
     });
     if (response.ok) {
-      setQuestions((prev) => prev.filter((item) => item.id !== Number(id)));
+      setQuestions((prev) => prev.filter((item) => item.id !== id));
     } else {
       console.log("Failed to delete question");
     }
+  };
+
+  const handleApprove = async (id: string) => {
+    const response = await fetch(`/api/admin/panel/approval`, {
+      method: "POST",
+      body: JSON.stringify({ id, status: "Approved" }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   useEffect(() => {
@@ -80,59 +92,28 @@ const QuestionTableBody = ({
     };
   }, [supabase]);
 
+  useReloadWhenOnline();
+
   return (
-    <tbody className="divide-y divide-gray-200">
-      {questions.map((question) => (
-        <tr key={question.id}>
-          <td className="whitespace-normal py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-            {editingId === String(question.id) ? (
-              <textarea
-                value={editText}
-                onChange={(e) => setEditText(e.target.value)}
-                onBlur={() => handleEdit(String(question.id), editText)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter")
-                    handleEdit(String(question.id), editText);
-                }}
-                className="border rounded-md w-full p-2 border-blue-500 focus:outline-none"
-                autoFocus
-                onFocus={(e) => e.target.select()}
-              />
-            ) : (
-              <p
-                onDoubleClick={() => {
-                  setEditingId(String(question.id));
-                  setEditText(question.question);
-                }}
-                className="border border-gray-300 rounded-md p-2"
-              >
-                {question.question}
-              </p>
-            )}
-          </td>
-          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {question.status}
-          </td>
-          <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-            <button
-              className="bg-blue-500 text-white px-2 py-1 rounded-md"
-              onClick={() => {
-                setEditingId(String(question.id));
-                setEditText(question.question);
-              }}
-            >
-              Edit
-            </button>
-            <button
-              className="bg-red-500 text-white px-2 py-1 rounded-md ml-2"
-              onClick={() => handleDelete(String(question.id))}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
+    <div className="w-full">
+      {questions.map((question, index) => (
+        <QuestionCard
+          key={question.id}
+          {...question}
+          index={index}
+          isEditing={editingId === String(question.id)}
+          editText={editText}
+          onEdit={() => {
+            setEditingId(String(question.id));
+            setEditText(question.question);
+          }}
+          onDelete={() => handleDelete(String(question.id))}
+          onSave={(newText) => handleEdit(String(question.id), newText)}
+          onEditTextChange={(text) => setEditText(text)}
+          onApprove={() => handleApprove(String(question.id))}
+        />
       ))}
-    </tbody>
+    </div>
   );
 };
 

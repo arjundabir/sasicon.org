@@ -5,8 +5,11 @@ import { cookies } from "next/headers";
 import { unstable_noStore as noStore } from "next/cache";
 import supabase from "@/lib/supabase";
 
+export const revalidate = 0;
+
 const page = async () => {
   noStore();
+
   const cookieStore = cookies();
   const id = cookieStore.get("userId")?.value;
   const { data, error } = await supabase
