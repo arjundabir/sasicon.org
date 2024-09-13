@@ -94,13 +94,14 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
                   key={item.id}
                   className="flex flex-col gap-2 border rounded-lg p-2"
                 >
+                  <p className="text-sm text-gray-500">{item.id.slice(0, 5)}</p>
                   <p className="text-xl font-bold text-black">
                     <span className="text-black font-medium text-sm">
                       Question:{" "}
                     </span>
                     {item.question}
                   </p>
-                  <p className="text-sm text-gray-500">{item.id.slice(0, 5)}</p>
+
                   <AskedQuestionAlert id={item.id} />
                 </div>
               ) : null
@@ -114,9 +115,17 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
         Questions:
       </h2>
       <div className="space-y-4">
+        <h3 className="text-xl font-bold leading-9 tracking-tight text-gray-900">
+          Pending:
+        </h3>
         {dynamicPanel &&
           dynamicPanel
-            .filter((item) => item.status !== "Rejected")
+            .filter(
+              (item) =>
+                item.status !== "Rejected" &&
+                item.status !== "Asked" &&
+                item.status !== "Approved"
+            )
             .map((item) => {
               const disabled =
                 item.status === "Approved" || item.status === "Rejected";
@@ -179,6 +188,39 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
                 </div>
               );
             })}
+        <div>
+          <h3 className="text-xl font-bold leading-9 tracking-tight text-gray-900">
+            Rejected:
+          </h3>
+          {dynamicPanel &&
+            dynamicPanel
+              .filter((item) => item.status === "Rejected")
+              .map((item) => (
+                <div key={item.id} className="flex flex-col gap-2">
+                  <p className="border border-gray-300 rounded-md p-2 text-lg">
+                    {item.question}
+                  </p>
+                </div>
+              ))}
+        </div>
+        <div>
+          <h3 className="text-xl font-bold leading-9 tracking-tight text-gray-900">
+            Asked:
+          </h3>
+          {dynamicPanel &&
+            dynamicPanel
+              .filter((item) => item.status === "Asked")
+              .map((item) => (
+                <div key={item.id} className="flex flex-col gap-2">
+                  <div className="border border-gray-300 rounded-md p-2 text-lg flex flex-col">
+                    <span className="text-sm text-gray-500">
+                      {item.id.slice(0, 5)}
+                    </span>
+                    {item.question}
+                  </div>
+                </div>
+              ))}
+        </div>
       </div>
     </div>
   );

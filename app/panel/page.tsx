@@ -2,8 +2,8 @@ import React from "react";
 import QuestionDashboard from "@/components/panel/QuestionDashboard";
 import { Panel } from "@/types/panel";
 import { cookies } from "next/headers";
-import { unstable_noStore as noStore } from "next/cache";
 import supabase from "@/lib/supabase";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const revalidate = 0;
 

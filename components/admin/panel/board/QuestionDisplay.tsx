@@ -2,10 +2,14 @@
 
 import supabase from "@/lib/supabase";
 import { Panel } from "@/types/panel";
+import useReloadWhenOnline from "@/utils/reload-when-online";
 import React, { useEffect, useState } from "react";
 
 const QuestionDisplay = ({ panelQuestions }: { panelQuestions: Panel[] }) => {
   const [questions, setQuestions] = useState<Panel[]>(panelQuestions);
+  const [approvedQuestion, setApprovedQuestion] = useState<Panel[]>(
+    questions.filter((question) => question.status === "Approved")
+  );
 
   useEffect(() => {
     const channel = supabase
@@ -38,23 +42,21 @@ const QuestionDisplay = ({ panelQuestions }: { panelQuestions: Panel[] }) => {
   }, [supabase]);
 
   useEffect(() => {
-    console.log(questions);
+    setApprovedQuestion(
+      questions.filter((question) => question.status === "Approved")
+    );
   }, [questions]);
+
+  useReloadWhenOnline();
 
   return (
     <div className="h-dvh w-dvw bg-white flex flex-col justify-center items-center">
-      <h1 className="text-2xl font-bold ">Question:</h1>
-      {questions.map((question, index) =>
-        question.status === "Approved" ? (
-          <p className="text-7xl font-bold" key={question.id}>
-            {question.question}: {question.id.slice(0, 5)}
-          </p>
-        ) : (
-          <div key={question.id}>
-            <p className="text-base text-red-400">No questions to display.</p>
-          </div>
-        )
-      )}
+      <h1 className="text-lg ">Question: {questions?.[0]?.id.slice(0, 5)}</h1>
+      {approvedQuestion.slice(0, 1).map((question) => (
+        <p className="text-7xl font-bold" key={question.id}>
+          {question.question}
+        </p>
+      ))}
     </div>
   );
 };

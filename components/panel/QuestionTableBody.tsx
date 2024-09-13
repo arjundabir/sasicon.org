@@ -11,6 +11,7 @@ const QuestionTableBody = ({
   initialQuestions: Panel[];
 }) => {
   const [questions, setQuestions] = useState<Panel[]>(initialQuestions);
+  const [approvedQuestions, setApprovedQuestions] = useState<Panel[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState<string>("");
 
@@ -92,10 +93,17 @@ const QuestionTableBody = ({
     };
   }, [supabase]);
 
+  useEffect(() => {
+    const approvedQuestions = questions.filter(
+      (question) => question.status === "Approved"
+    );
+    setApprovedQuestions(approvedQuestions);
+  }, [questions]);
+
   useReloadWhenOnline();
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col">
       {questions.map((question, index) => (
         <QuestionCard
           key={question.id}
@@ -111,6 +119,7 @@ const QuestionTableBody = ({
           onSave={(newText) => handleEdit(String(question.id), newText)}
           onEditTextChange={(text) => setEditText(text)}
           onApprove={() => handleApprove(String(question.id))}
+          queuePosition={approvedQuestions.indexOf(question) + 1 || null}
         />
       ))}
     </div>
