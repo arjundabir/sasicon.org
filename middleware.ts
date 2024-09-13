@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
     const { data, error } = await supabase
       .from("users")
       .select("*")
-      .eq("id", userId?.value);
+      .eq("id", userId);
     if (data && data.length > 0) {
       const user = data[0] as User;
       const isAdmin = user.is_admin;
@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
     const { data, error } = await supabase
       .from("certificates")
       .select("*")
-      .eq("user_id", userId?.value);
+      .eq("user_id", userId);
     if (data && data.length > 0) {
       return NextResponse.redirect(new URL("/", request.url));
     }
@@ -48,7 +48,7 @@ export async function middleware(request: NextRequest) {
     const { data, error } = await supabase
       .from("panel")
       .select("*")
-      .eq("user_id", userId?.value);
+      .eq("user_id", userId);
     if (data && data.length < 1) {
       return NextResponse.redirect(new URL("/panel/ask", request.url));
     }
@@ -59,9 +59,26 @@ export async function middleware(request: NextRequest) {
     const { data, error } = await supabase
       .from("users")
       .select("*")
-      .eq("id", userId?.value);
+      .eq("id", userId);
     if (!(data && data.length > 0 && data[0].food_tickets > 0)) {
       return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  // Add user to workshop
+  if(request.nextUrl.pathname.includes("/workshop")){
+    const workshopTitle = request.nextUrl.pathname.split("/")[2].split("-").join(" ");
+    const {data, error} = await supabase.from("users").select("workshops").eq("id", userId);
+    if (data && data.length > 0){
+      const user = data[0] as User;
+      const workshops = user.workshops;
+      if(!workshops.includes(workshopTitle)){
+        workshops.push(workshopTitle);
+      }
+      const {data: updatedData, error: updateError} = await supabase.from("users").update({workshops: workshops}).eq("id", userId);
+      if(updateError){
+        console.log(updateError);
+      }
     }
   }
 
