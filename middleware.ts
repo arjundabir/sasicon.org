@@ -74,10 +74,10 @@ export async function middleware(request: NextRequest) {
       const workshops = user.workshops;
       if(!workshops.includes(workshopTitle)){
         workshops.push(workshopTitle);
-      }
-      const {data: updatedData, error: updateError} = await supabase.from("users").update({workshops: workshops}).eq("id", userId);
-      if(updateError){
-        console.log(updateError);
+        const {data: updatedData, error: updateError} = await supabase.from("users").update({workshops: workshops}).eq("id", userId);
+        if(updateError){
+          console.log(updateError);
+        }
       }
     }
   }

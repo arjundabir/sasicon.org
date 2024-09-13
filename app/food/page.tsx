@@ -8,7 +8,7 @@ const page = async () => {
   const { data, error } = await supabase
     .from("users")
     .update({ food_tickets: 0 })
-    .eq("id", userId?.value);
+    .eq("id", userId);
   if (error) {
     console.log(error);
   }
