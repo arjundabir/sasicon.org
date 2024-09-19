@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { MicrosoftClarity } from "@/components/scripts/MicrosoftClarity";
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,7 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        {children}
+        <GoogleAnalytics gaId={"G-PRSN6DHRN8"} />
+        <MicrosoftClarity clarityId={"o5isantbxj"} />
+      </body>
     </html>
   );
 }
