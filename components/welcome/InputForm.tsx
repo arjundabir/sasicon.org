@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Alert from "./Alert";
 import { User } from "@/types/user";
+import AdminVerify from "./AdminVerify";
 
 const InputForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [statusCode, setStatusCode] = useState(0);
   const [user, setUser] = useState<User | null>(null);
+  const [adminVerify, setAdminVerify] = useState(false);
 
   const router = useRouter();
 
@@ -36,18 +38,25 @@ const InputForm = () => {
         method: "POST",
         body: JSON.stringify({ firstName, lastName, email }),
       });
-      const { result }: { result: User } = await response.json();
-      setStatusCode(response.status);
-      setUser(result);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setIsLoading(false);
-      router.push("/");
+      const { data }: { data: User } = await response.json();
+      setUser(data);
+      if (data.is_admin) {
+        setAdminVerify(true);
+      } else {
+        setStatusCode(response.status);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setIsLoading(false);
+        router.push("/");
+      }
     }
 
     setIsLoading(true);
   };
   return (
     <>
+      {adminVerify && (
+        <AdminVerify setAdminVerify={setAdminVerify} data={user || null} />
+      )}
       <Alert result={user} statusCode={statusCode} />
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>

@@ -29,9 +29,10 @@ export async function POST(request: NextRequest) {
       }
       user = newUser[0];
     }
-
-    cookies().set("userId", user.id);
-    cookies().set("raffleTickets", user.raffle_tickets.toString());
+    if (!user.is_admin) {
+      cookies().set("userId", user.id);
+      cookies().set("raffleTickets", user.raffle_tickets.toString());
+    }
     return NextResponse.json({ data: user }, { status: user ? 200 : 201 });
 
   } catch (error) {
