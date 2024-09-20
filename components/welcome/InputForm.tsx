@@ -44,7 +44,6 @@ const InputForm = () => {
         setAdminVerify(true);
       } else {
         setStatusCode(response.status);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
         setIsLoading(false);
         router.push("/");
       }

@@ -27,13 +27,13 @@ const AdminVerify = ({
 
     const result = await response.json();
     if (response.ok) {
-      setMessage(result.message);
-      if (!isAdmin) {
+      if (response.status === 200) {
+        setMessage(result.message);
         router.push("/");
         setAdminVerify(false);
+      } else {
+        setMessage("Verification failed");
       }
-    } else {
-      setMessage("Verification failed");
     }
   };
 
