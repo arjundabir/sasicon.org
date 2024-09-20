@@ -5,7 +5,7 @@ import InputForm from "./InputForm";
 
 const Input = () => {
   return (
-    <div className="p-8">
+    <div className="px-4 py-8">
       <Image src={Logo} alt="Certificate" width={80} height={80} />
       <h2 className="text-xl font-semibold leading-7 text-gray-900">
         Interested in our Certificate?
