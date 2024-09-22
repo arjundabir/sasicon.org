@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Logo from "@/public/logo.png";
@@ -15,6 +17,7 @@ type ArtListProps = {
 };
 
 const ArtList = ({ works, user }: ArtListProps) => {
+  const [search, setSearch] = React.useState("");
   return (
     <VoteContainer vote={user?.vote}>
       <div className="bg-white">
@@ -29,10 +32,25 @@ const ArtList = ({ works, user }: ArtListProps) => {
             <h2 className="text-xl font-semibold text-gray-900 w-full">
               All Art Works
             </h2>
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full p-2 rounded-md border"
+              placeholder="Search by title or artist name"
+            />
             <div className="mt-2 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-              {works?.map((work) => {
-                return <ArtCard key={work.id} work={work} user={user} />;
-              })}
+              {works
+                ?.filter(
+                  (work) =>
+                    work.title.toLowerCase().includes(search.toLowerCase()) ||
+                    work.first_last_name
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
+                )
+                .map((work) => {
+                  return <ArtCard key={work.id} work={work} user={user} />;
+                })}
             </div>
           </div>
         </div>

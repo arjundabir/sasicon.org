@@ -15,7 +15,8 @@ export default async function page() {
     error: workVotesError,
   }: { data: WorkVote[] | null; error: any } = await supabase
     .from("work_votes")
-    .select("*");
+    .select("*")
+    .order("total_votes", { ascending: false });
   const {
     data: works,
     error: worksError,
@@ -30,6 +31,8 @@ export default async function page() {
   if (worksError) {
     console.error("Error fetching works:", worksError);
   }
+
+  console.log(workVotes?.filter((vote) => vote.work_id === 1));
   let sortedWorks: (Work & { total_votes: number })[] = [];
   if (workVotes && works) {
     sortedWorks = works
