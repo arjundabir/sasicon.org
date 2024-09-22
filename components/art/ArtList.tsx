@@ -19,7 +19,9 @@ const ArtList = ({ works, user }: ArtListProps) => {
     <VoteContainer vote={user?.vote}>
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <Image src={Logo} alt="Certificate" width={80} height={80} />
+          <Link href="/">
+            <Image src={Logo} alt="Certificate" width={80} height={80} />
+          </Link>
           <h2 className="text-xl font-semibold text-gray-900">
             Vote for your favorite art work.
           </h2>

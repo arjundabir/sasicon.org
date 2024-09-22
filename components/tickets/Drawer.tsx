@@ -12,6 +12,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { MinusIcon } from "@heroicons/react/24/solid"; // Assuming you have a BeanIcon
 import { User } from "@/types/user";
 import Schedule from "./Schedule";
+import Link from "next/link";
 
 export default function Drawer({ userId }: { userId: string | undefined }) {
   const [open, setOpen] = useState(false);
@@ -103,8 +104,8 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
                     </button>
                   </div>
                 </TransitionChild>
-                <div className="max-h-screen bg-white p-8 flex flex-col gap-y-6">
-                  <div className="flex-1">
+                <div className="h-screen bg-white p-8 flex flex-col gap-y-6">
+                  <div className="">
                     <div className="mt-4 flex items-start justify-between">
                       <div>
                         <h2 className="text-base font-semibold leading-6 text-gray-900">
@@ -117,7 +118,7 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
                       </div>
                     </div>
                   </div>
-                  <div className="flex-1">
+                  <div className="">
                     <h3 className="font-medium text-gray-900">Information</h3>
                     <dl className="mt-2 divide-y divide-gray-200 border-b border-t border-gray-200">
                       <div className="flex justify-between py-3 text-sm font-medium">
@@ -149,23 +150,35 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
                   </div>
 
                   <Schedule />
-                  <div>
+                  <div className="mt-auto">
                     <h3 className="font-medium text-gray-900">To Do:</h3>
-                    <div className="mt-2 flex items-center justify-between">
-                      <p className="text-sm italic text-gray-500">
-                        Vote your favorite art piece!
-                      </p>
+                    <Link
+                      href="/art"
+                      className="mt-2 flex items-center justify-between"
+                    >
+                      {user?.vote === null || user?.vote === undefined ? (
+                        <p className="text-sm italic text-gray-500">
+                          Vote your favorite art piece!
+                        </p>
+                      ) : (
+                        <p className="text-sm italic text-gray-500">
+                          Thank you for voting! Check out the art pieces you
+                          voted for.
+                        </p>
+                      )}
                       <button
                         type="button"
                         className="relative -mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       >
                         <span className="absolute -inset-1.5" />
-                        <ArrowTopRightOnSquareIcon
-                          aria-hidden="true"
-                          className="h-5 w-5"
-                        />
+                        <div className="flex items-center justify-center rounded-full h-8 w-8">
+                          <ArrowTopRightOnSquareIcon
+                            aria-hidden="true"
+                            className="h-5 w-auto"
+                          />
+                        </div>
                       </button>
-                    </div>
+                    </Link>
                   </div>
                   <div id="contact-us" className="flex">
                     <a

@@ -39,34 +39,37 @@ const events = [
 ];
 
 const Schedule = () => {
+  const timeNow = new Date();
   return (
     <section className="flex-initial overflow-scroll">
       <h2 className="text-base font-semibold leading-6 text-gray-900">
         Event Schedule
       </h2>
       <ol className="mt-2 divide-y divide-gray-200 text-sm leading-6 text-gray-500">
-        {events.map((event, index) => (
-          <li key={index} className="py-4 sm:flex">
-            <p className="w-full flex-none">
-              <time dateTime={event.start}>
-                {new Date(event.start).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </time>{" "}
-              -{" "}
-              <time dateTime={event.end}>
-                {new Date(event.end).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </time>
-            </p>
-            <p className="mt-2 flex-auto font-semibold text-gray-900 sm:mt-0">
-              {event.title}
-            </p>
-          </li>
-        ))}
+        {events
+          .filter((event) => new Date(event.start) > timeNow)
+          .map((event, index) => (
+            <li key={index} className="py-4 sm:flex">
+              <p className="w-full flex-none">
+                <time dateTime={event.start}>
+                  {new Date(event.start).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </time>{" "}
+                -{" "}
+                <time dateTime={event.end}>
+                  {new Date(event.end).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </time>
+              </p>
+              <p className="mt-2 flex-auto font-semibold text-gray-900 sm:mt-0">
+                {event.title}
+              </p>
+            </li>
+          ))}
       </ol>
     </section>
   );
