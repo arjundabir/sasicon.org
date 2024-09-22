@@ -104,8 +104,8 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
                     </button>
                   </div>
                 </TransitionChild>
-                <div className="h-screen bg-white p-8 flex flex-col gap-y-6">
-                  <div className="">
+                <div className="h-dvh bg-white p-8 flex flex-col gap-y-6">
+                  <div className="flex-grow-0">
                     <div className="mt-4 flex items-start justify-between">
                       <div>
                         <h2 className="text-base font-semibold leading-6 text-gray-900">
@@ -118,7 +118,7 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
                       </div>
                     </div>
                   </div>
-                  <div className="">
+                  <div className="flex-grow-0">
                     <h3 className="font-medium text-gray-900">Information</h3>
                     <dl className="mt-2 divide-y divide-gray-200 border-b border-t border-gray-200">
                       <div className="flex justify-between py-3 text-sm font-medium">
@@ -150,7 +150,7 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
                   </div>
 
                   <Schedule />
-                  <div className="mt-auto">
+                  <div className="flex-grow">
                     <h3 className="font-medium text-gray-900">To Do:</h3>
                     <Link
                       href="/art"
@@ -166,18 +166,9 @@ export default function Drawer({ userId }: { userId: string | undefined }) {
                           voted for.
                         </p>
                       )}
-                      <button
-                        type="button"
-                        className="relative -mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      >
-                        <span className="absolute -inset-1.5" />
-                        <div className="flex items-center justify-center rounded-full h-8 w-8">
-                          <ArrowTopRightOnSquareIcon
-                            aria-hidden="true"
-                            className="h-5 w-auto"
-                          />
-                        </div>
-                      </button>
+                      <div className="h-8 w-8 flex items-center justify-center bg-white text-gray-400 hover:text-gray-500">
+                        <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                      </div>
                     </Link>
                   </div>
                   <div id="contact-us" className="flex">

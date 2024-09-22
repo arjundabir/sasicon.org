@@ -3,16 +3,18 @@
 import React from "react";
 import { BookmarkIcon } from "@heroicons/react/24/solid";
 import { VoteContext } from "./VoteContainer";
+import useHydration from "@/hooks/useHydration";
 const BookmarkButton = ({ workId }: { workId: number }) => {
   const { bookmarked, setBookmarked } = React.useContext(VoteContext);
   const isBookmarked = bookmarked.includes(workId);
-  return (
+  const isHydrated = useHydration();
+  return isHydrated ? (
     <button
       onClick={() => {
         if (isBookmarked) {
-          setBookmarked(bookmarked.filter((id) => id !== workId));
+          setBookmarked((prev) => prev.filter((id) => id !== workId));
         } else {
-          setBookmarked([...bookmarked, workId]);
+          setBookmarked((prev) => [...prev, workId]);
         }
       }}
       className="bg-white rounded-full p-1.5 shadow-md"
@@ -23,6 +25,10 @@ const BookmarkButton = ({ workId }: { workId: number }) => {
         }`}
       />
     </button>
+  ) : (
+    <div className="bg-white rounded-full p-1.5 shadow-md">
+      <BookmarkIcon className={`w-5 h-auto text-black`} />
+    </div>
   );
 };
 

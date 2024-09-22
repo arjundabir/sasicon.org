@@ -34,52 +34,46 @@ const VoteContainer = ({ children, vote }: VoteContainerProps) => {
     "bookmarked",
     []
   );
-  const [bookmarks, setBookmarks] = React.useState<number[]>([]);
 
+  // Position calculation for bookmarks
+  const calculateBookmarkPositions = () => {
+    const viewportHeight = window.innerHeight;
+    return bookmarked.map((workId) => {
+      const element = document.getElementById(workId.toString());
+      if (element) {
+        const elementRect = element.getBoundingClientRect();
+        const elementCenter = elementRect.y + elementRect.height / 2;
+        return Math.min(
+          99,
+          Math.max(1, (elementCenter / viewportHeight) * 100)
+        );
+      }
+      return 0;
+    });
+  };
+
+  const [bookmarkPositions, setBookmarkPositions] = React.useState<number[]>(
+    []
+  );
+
+  // Update bookmark positions when bookmarks change or on scroll
   React.useEffect(() => {
-    if (bookmarked.length > 0) {
-      const viewportHeight = window.screen.availHeight;
-      bookmarked.forEach((work_id, index) => {
-        const element = document.getElementById(work_id.toString());
-        if (element) {
-          const updateBookmarkPosition = () => {
-            const elementRect = element.getBoundingClientRect();
-            const elementCenter = elementRect.y + elementRect.height / 2;
-            const elementCenterRelativeToViewport = elementCenter;
-            const newBookmarkPositionPercentage = Math.min(
-              99,
-              Math.max(
-                1,
-                (elementCenterRelativeToViewport / viewportHeight) * 100
-              )
-            );
+    const updateBookmarkPositions = () => {
+      setBookmarkPositions(calculateBookmarkPositions());
+    };
 
-            setBookmarks((prev) => {
-              const newBookmarks = [...prev];
-              newBookmarks[index] = newBookmarkPositionPercentage;
-              return newBookmarks;
-            });
-            console.log(newBookmarkPositionPercentage);
-          };
+    updateBookmarkPositions();
 
-          updateBookmarkPosition();
+    window.addEventListener("scroll", updateBookmarkPositions);
 
-          window.addEventListener("scroll", () => {
-            updateBookmarkPosition();
-          });
-
-          return () => {
-            window.removeEventListener("scroll", updateBookmarkPosition);
-          };
-        }
-      });
-    }
+    return () => {
+      window.removeEventListener("scroll", updateBookmarkPositions);
+    };
   }, [bookmarked]);
 
   const scrollToBookmark = (index: number) => {
-    if (bookmarks.length > 0) {
+    if (bookmarked.length > 0) {
       const element = document.getElementById(bookmarked[index].toString());
-      console.log(element);
       if (element) {
         element.scrollIntoView({
           behavior: "smooth",
@@ -95,15 +89,17 @@ const VoteContainer = ({ children, vote }: VoteContainerProps) => {
       value={{ voteId, setVoteId, bookmarked, setBookmarked }}
     >
       {children}
-      {isHydrated && bookmarks.length > 0 && (
-        <div className="fixed top-0 right-0 w-10 h-dvh z-10 bg-black/10 transition-opacity duration-300">
-          {bookmarks.map((bookmark, index) => (
+      {isHydrated && (
+        <div
+          className={`fixed top-0 right-0 w-10 h-screen z-10 bg-black/10 transition-opacity ${
+            bookmarkPositions.length > 0 ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {bookmarkPositions.map((position, index) => (
             <button
               key={index}
-              onClick={() => {
-                scrollToBookmark(index);
-              }}
-              style={{ top: `${bookmark}%` }}
+              onClick={() => scrollToBookmark(index)}
+              style={{ top: `${position}%` }}
               className={`absolute w-full h-4 ${colors[index % colors.length]}`}
             />
           ))}
