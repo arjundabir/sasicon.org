@@ -44,12 +44,16 @@ const ArtList = ({ works, user }: ArtListProps) => {
 const ArtCard = ({ work, user }: { work: Work; user: User | undefined }) => {
   return (
     <div id={work.id.toString()} key={work.id} className="relative">
-      <div className="relative h-fit w-full overflow-hidden rounded-lg ">
+      <div className="relative h-fit w-full overflow-hidden border rounded-lg">
         {work.submission_link.includes(".pdf") ? (
           <iframe
             src={work.submission_link}
             width="100%"
-            className="aspect-[3/4]"
+            className={`h-full ${
+              work.title.toLowerCase().includes("triptych")
+                ? "aspect-[11/6.5]"
+                : "aspect-[8.5/11]"
+            }`}
             title="PDF Viewer"
           />
         ) : (
@@ -75,7 +79,9 @@ const ArtCard = ({ work, user }: { work: Work; user: User | undefined }) => {
         <h3 className="text-lg font-medium text-gray-900 truncate text-ellipsis">
           {work.title}
         </h3>
-        <p className="text-sm text-black">{work.first_last_name}</p>
+        {work.choice !== "anonymous" && (
+          <p className="text-sm text-black">{work.first_last_name}</p>
+        )}
         <p className="mt-1 text-sm text-gray-500 line-clamp-2 text-ellipsis">
           {work.description}
         </p>

@@ -28,15 +28,21 @@ const page = async ({ params }: PageProps) => {
       className="relative p-4 flex flex-col justify-center min-h-dvh"
     >
       <h3 className="text-2xl font-bold text-gray-900">{selectedWork.title}</h3>
-      <p className="text-sm text-gray-500 mb-2">
-        {selectedWork.first_last_name}
-      </p>
+      {selectedWork.choice !== "anonymous" && (
+        <p className="text-sm text-gray-500 mb-2">
+          {selectedWork.first_last_name}
+        </p>
+      )}
       <div className="relative h-fit w-full overflow-hidden rounded-lg ">
         {selectedWork.submission_link.includes(".pdf") ? (
           <iframe
             src={selectedWork.submission_link}
             width="100%"
-            className="aspect-[3/4] h-full"
+            className={`h-full ${
+              selectedWork.title.toLowerCase().includes("triptych")
+                ? "aspect-[1/2]"
+                : "aspect-[3/4]"
+            }`}
             title="PDF Viewer"
           />
         ) : (

@@ -2,6 +2,8 @@ import ArtList from "@/components/admin/art/ArtList";
 import supabase from "@/lib/supabase";
 import { Work } from "@/types/work";
 
+export const dynamic = "force-static";
+
 type WorkVote = {
   work_id: number;
   total_votes: number;
@@ -38,6 +40,8 @@ export default async function page() {
       })
       .sort((a, b) => b.total_votes - a.total_votes);
   }
+
+  console.log(sortedWorks[0]);
 
   return (
     <div>
