@@ -16,7 +16,7 @@ const AdminVerify = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isAdmin = inputValue === "yourSecretValue"; // Replace with your actual secret value
+    const isAdmin = inputValue === "yourSecretValue";
     const response = await fetch("/api/admin/welcome/verify", {
       method: "POST",
       headers: {
@@ -29,7 +29,7 @@ const AdminVerify = ({
     if (response.ok) {
       if (response.status === 200) {
         setMessage(result.message);
-        router.push("/");
+        window.location.href = "/";
         setAdminVerify(false);
       } else {
         setMessage("Verification failed");

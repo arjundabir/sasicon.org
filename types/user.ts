@@ -9,6 +9,7 @@ export interface User {
   school_email: string;
   food_tickets: number;
   checked_in: Date;
+  vote: number | null;
 }
 
 export interface UserDatabase{

@@ -12,13 +12,9 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url));
   } 
 
-  const unverifiedPaths = ["/", "welcome"]
-  if (!userId && !unverifiedPaths.includes(request.nextUrl.pathname)){
-    return NextResponse.redirect(new URL('/welcome', request.url));
-  }
-
   // Redirect to welcome if user is not logged in
-  else if (!userId && request.nextUrl.pathname === '/profile') {
+  const config = ["admin", "art", "certificate", "food", "panel", "profile", "workshop"];
+  if (!userId && config.some(path => request.nextUrl.pathname.includes(path))) {
         return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -89,3 +85,7 @@ export async function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!api).*)"],
+};

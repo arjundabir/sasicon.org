@@ -27,14 +27,23 @@ const page = async ({ params }: PageProps) => {
         {selectedWork.first_last_name}
       </p>
       <div className="relative h-fit w-full overflow-hidden rounded-lg ">
-        <Image
-          alt={selectedWork.title}
-          src={selectedWork.submission_link}
-          className="h-full w-full object-contain object-center"
-          width={500}
-          height={500}
-          priority
-        />
+        {selectedWork.submission_link.includes(".pdf") ? (
+          <iframe
+            src={selectedWork.submission_link}
+            width="100%"
+            className="aspect-[3/4] h-full"
+            title="PDF Viewer"
+          />
+        ) : (
+          <Image
+            alt={selectedWork.title}
+            src={selectedWork.submission_link}
+            className="h-full w-full object-contain object-center"
+            width={500}
+            height={500}
+            priority
+          />
+        )}
       </div>
       <div className="relative mt-4">
         <p className="mt-1 text-sm text-gray-500 line-clamp-2">

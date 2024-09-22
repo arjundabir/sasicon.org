@@ -12,5 +12,4 @@ export interface Work {
   title: string;
   submission_link: string;
   description?: string;
-  votes: number;
 }
