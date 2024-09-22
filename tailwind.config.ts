@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import colors from "./data/colors";
 
 const config: Config = {
   content: [
@@ -16,5 +17,6 @@ const config: Config = {
     },
   },
   plugins: [require("@tailwindcss/aspect-ratio")],
+  safelist: colors,
 };
 export default config;

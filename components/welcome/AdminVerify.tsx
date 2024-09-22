@@ -38,7 +38,7 @@ const AdminVerify = ({
   };
 
   return (
-    <div className="absolute top-0 left-0 w-dvw h-dvh flex flex-col justify-center items-center bg-black/50 p-1">
+    <div className="absolute top-0 left-0 w-dvw h-dvh flex flex-col justify-center items-center bg-black/50 p-1 z-50">
       <div className="bg-white rounded-lg p-4">
         {message && (
           <p className="text-red-500 text-center text-lg font-medium">
