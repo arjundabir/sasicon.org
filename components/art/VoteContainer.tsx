@@ -9,6 +9,7 @@ import React, { Dispatch, SetStateAction } from "react";
 interface VoteContainerProps {
   vote: User["vote"] | undefined;
   children: React.ReactNode;
+  bookmarkVisible?: boolean;
 }
 
 type VoteContextType = {
@@ -28,7 +29,11 @@ const defaultVoteContext: VoteContextType = {
 export const VoteContext =
   React.createContext<VoteContextType>(defaultVoteContext);
 
-const VoteContainer = ({ children, vote }: VoteContainerProps) => {
+const VoteContainer = ({
+  children,
+  vote,
+  bookmarkVisible = true,
+}: VoteContainerProps) => {
   const [voteId, setVoteId] = React.useState<number | null>(vote ?? null);
   const [bookmarked, setBookmarked] = useLocalStorage<number[]>(
     "bookmarked",
@@ -89,7 +94,7 @@ const VoteContainer = ({ children, vote }: VoteContainerProps) => {
       value={{ voteId, setVoteId, bookmarked, setBookmarked }}
     >
       {children}
-      {isHydrated && (
+      {isHydrated && bookmarkVisible && (
         <div
           className={`fixed top-0 right-0 w-10 h-screen z-10 bg-black/10 transition-opacity ${
             bookmarkPositions.length > 0 ? "opacity-100" : "opacity-0"

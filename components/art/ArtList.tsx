@@ -26,8 +26,12 @@ const ArtList = ({ works, user }: ArtListProps) => {
             <Image src={Logo} alt="Certificate" width={80} height={80} />
           </Link>
           <h2 className="text-xl font-semibold text-gray-900">
-            Vote for your favorite art work.
+            Vote for your favorite work.
           </h2>
+          <p className="mt-1 text-md leading-6 text-gray-600">
+            You may only vote for one piece. If you have selected a piece, you
+            may vote for another piece by clicking the vote button.
+          </p>
           <div className="mt-8">
             <h2 className="text-xl font-semibold text-gray-900 w-full">
               All Art Works

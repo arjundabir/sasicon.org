@@ -60,7 +60,7 @@ const page = async ({ params }: PageProps) => {
         <p className="mt-1 text-sm text-gray-500">{selectedWork.description}</p>
       </div>
       <div className="mt-6 flex gap-2">
-        <VoteContainer vote={user?.vote}>
+        <VoteContainer vote={user?.vote} bookmarkVisible={false}>
           <Link
             href={`/art#${selectedWork.id}`}
             className="w-full relative flex items-center justify-center rounded-md border border-transparent px-8 py-2 text-sm font-medium text-gray-900  transition-all duration-300 bg-gray-100 hover:bg-gray-200"
