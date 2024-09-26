@@ -1,10 +1,11 @@
 "use client";
 
+import SASI from "@/public/logo.png";
 import supabase from "@/lib/supabase";
 import { Panel } from "@/types/panel";
 import useReloadWhenOnline from "@/utils/reload-when-online";
 import React, { useEffect, useState } from "react";
-
+import Image from "next/image";
 const QuestionDisplay = ({ panelQuestions }: { panelQuestions: Panel[] }) => {
   const [questions, setQuestions] = useState<Panel[]>(panelQuestions);
   const [approvedQuestion, setApprovedQuestion] = useState<Panel[]>(
@@ -50,10 +51,10 @@ const QuestionDisplay = ({ panelQuestions }: { panelQuestions: Panel[] }) => {
   useReloadWhenOnline();
 
   return (
-    <div className="h-dvh w-dvw bg-white flex flex-col justify-center items-center">
-      <h1 className="text-lg ">Question: {questions?.[0]?.id.slice(0, 5)}</h1>
+    <div className="h-dvh bg-white flex flex-col justify-center items-center container  mx-auto">
+      <Image src={SASI} alt="SASI" className="w-32" />
       {approvedQuestion.slice(0, 1).map((question) => (
-        <p className="text-7xl font-bold" key={question.id}>
+        <p className="text-5xl font-medium text-center mb-32" key={question.id}>
           {question.question}
         </p>
       ))}

@@ -14,9 +14,9 @@ const page = async ({ params }: PageProps) => {
     .select("*")
     .eq("id", params.slug[0]);
   return (
-    <div className="bg-green-500 flex justify-center items-center w-dvw h-dvh">
+    <div className="bg-[#f2c161] flex justify-center items-center w-dvw h-dvh">
       <Redirect panel={data?.[0]} />
-      <h1 className="text-white text-7xl font-medium">
+      <h1 className="text-[#1421a6] text-[30dvw] font-bold">
         {params.slug[0].slice(0, 5)}
       </h1>
     </div>

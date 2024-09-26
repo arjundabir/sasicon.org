@@ -1,7 +1,10 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import type { Panel } from "@/types/panel";
 import supabase from "@/lib/supabase";
+import Logo from "@/public/logo.png";
+import Image from "next/image";
 
 const Panel = ({ panel }: { panel: Panel[] | null }) => {
   const [dynamicPanel, setDynamicPanel] = useState<Panel[]>(panel || []);
@@ -66,7 +69,7 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
 
   useEffect(() => {
     // Effect logic here
-  }, []); // Removed 'supabase' from dependency array
+  }, [supabase]); // Removed 'supabase' from dependency array
 
   const lastApprovedQuestion = dynamicPanel
     .filter((item) => item.status === "Approved")
@@ -74,20 +77,19 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      {lastApprovedQuestion && (
-        <div key={lastApprovedQuestion.id} className="flex flex-col gap-2">
-          <p className="border border-gray-300 rounded-md p-2">
-            {lastApprovedQuestion.question}
-          </p>
-          <button
-            className="bg-blue-500 text-white px-2 py-1 rounded-md self-end"
-            onClick={() => handleRead(lastApprovedQuestion.id)}
-            style={{ position: "absolute", bottom: "10px", right: "10px" }}
+      <div className="flex flex-col items-center">
+        <Image src={Logo} alt="Logo" className="w-32 max-w-xs mb-4" />
+        {lastApprovedQuestion && (
+          <div
+            key={lastApprovedQuestion.id}
+            className="flex flex-col items-center gap-2"
           >
-            Read
-          </button>
-        </div>
-      )}
+            <p className="text-9xl font-medium rounded-md p-2 text-center">
+              {lastApprovedQuestion.question}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

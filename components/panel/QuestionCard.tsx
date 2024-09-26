@@ -52,9 +52,9 @@ export default function QuestionCard({
       {queuePosition === 1 && (
         <Link
           href={`/panel/${id}`}
-          className="absolute top-0 left-0 text-gray-500 w-full h-full z-10 flex items-center justify-center bg-green-500 rounded-lg p-4"
+          className="absolute top-0 left-0 text-gray-500 w-full h-full z-10 flex items-center justify-center bg-[#f2c161] rounded-lg p-4"
         >
-          <h1 className="text-white text-xl font-medium">
+          <h1 className="text-[#1421a6] text-2xl font-medium">
             You are up! Click here and show us your screen.
           </h1>
         </Link>
@@ -126,7 +126,7 @@ export default function QuestionCard({
                 <div className="text-black text-sm rounded-md w-fit h-auto">
                   Place in Queue
                 </div>
-                <button className="bg-green-500 mt-1 font-medium text-lg text-white p-0.5 rounded-md w-10 h-10">
+                <button className="bg-[#f2c161] mt-1 font-medium text-lg text-white p-0.5 rounded-md w-10 h-10">
                   {queuePosition}
                 </button>
               </div>

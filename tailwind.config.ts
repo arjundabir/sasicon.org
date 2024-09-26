@@ -17,6 +17,6 @@ const config: Config = {
     },
   },
   plugins: [require("@tailwindcss/aspect-ratio")],
-  safelist: colors,
+  safelist: [...colors, "pl-8", "sticky"],
 };
 export default config;
