@@ -16,6 +16,10 @@ const navItems = [
     name: "Panel",
     href: "/admin/panel",
   },
+  {
+    name: "Raffle",
+    href: "/admin/raffle",
+  },
 ];
 
 const Nav = () => {
