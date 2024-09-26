@@ -120,6 +120,7 @@ const QuestionTableBody = ({
           onEditTextChange={(text) => setEditText(text)}
           onApprove={() => handleApprove(String(question.id))}
           queuePosition={approvedQuestions.indexOf(question) + 1 || null}
+          message={question.message}
         />
       ))}
     </div>

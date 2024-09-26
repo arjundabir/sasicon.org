@@ -3,5 +3,6 @@ export interface Panel {
     user_id: string;
     question: string;
     status: "Pending" | "Approved" | "Rejected" | "Modified" | "Asked" | null;
+    message: string | null;
 }
 

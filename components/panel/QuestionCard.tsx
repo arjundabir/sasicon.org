@@ -13,6 +13,7 @@ interface QuestionCardProps extends Panel {
   index: number;
   onApprove: () => void;
   queuePosition: number | null;
+  message: string | null;
 }
 
 const statusColors = {
@@ -42,6 +43,7 @@ export default function QuestionCard({
   index,
   onApprove,
   queuePosition,
+  message,
 }: QuestionCardProps) {
   const disabled =
     status === "Approved" || status === "Rejected" || status === "Asked";
@@ -133,6 +135,9 @@ export default function QuestionCard({
             )}
           </div>
         </div>
+        {message !== "null" && (
+          <div className="mt-2 text-sm text-gray-500">Reason: {message}</div>
+        )}
       </div>
     </div>
   );

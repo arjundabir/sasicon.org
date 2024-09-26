@@ -4,21 +4,42 @@ import type { Panel } from "@/types/panel";
 import supabase from "@/lib/supabase";
 import AskedQuestionAlert from "./active/AskedQuestionAlert";
 import useReloadWhenOnline from "@/utils/reload-when-online";
+import RejectModal from "./RejectButton";
 
 const Panel = ({ panel }: { panel: Panel[] | null }) => {
   const [dynamicPanel, setDynamicPanel] = useState<Panel[]>(panel || []);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState<string>("");
 
-  const handleApproval = async (id: string, status: Panel["status"]) => {
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
+
+  const handleApproval = async (
+    id: string,
+    status: Panel["status"],
+    message: string
+  ) => {
     const response = await fetch(`/api/admin/panel/approval`, {
       method: "POST",
-      body: JSON.stringify({ id, status }),
+      body: JSON.stringify({ id, status, message: message || null }),
     });
     if (response.ok) {
       const data = await response.json();
+      // Update the dynamicPanel state based on the response
     } else {
       console.log("Failed to update approval status");
+    }
+  };
+
+  const openRejectModal = (id: string) => {
+    setRejectingId(id);
+    setIsRejectModalOpen(true);
+  };
+
+  const handleReject = (reason: string) => {
+    if (rejectingId) {
+      handleApproval(rejectingId, "Rejected", reason);
+      setRejectingId(null);
     }
   };
 
@@ -163,13 +184,13 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
                     <button
                       className="bg-green-500 text-white px-2 py-1 rounded-md disabled:opacity-50"
                       disabled={disabled}
-                      onClick={() => handleApproval(item.id, "Approved")}
+                      onClick={() => handleApproval(item.id, "Approved", "")}
                     >
                       Approve
                     </button>
                     <button
                       className="bg-red-500 text-white px-2 py-1 rounded-md disabled:opacity-50"
-                      onClick={() => handleApproval(item.id, "Rejected")}
+                      onClick={() => openRejectModal(item.id)}
                       disabled={disabled}
                     >
                       Reject
@@ -222,6 +243,11 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
               ))}
         </div>
       </div>
+      <RejectModal
+        isOpen={isRejectModalOpen}
+        onClose={() => setIsRejectModalOpen(false)}
+        onReject={handleReject}
+      />
     </div>
   );
 };
