@@ -2,39 +2,39 @@ import React from "react";
 
 const events = [
   {
-    start: "2024-09-28T09:00",
-    end: "2024-09-28T09:40",
-    title: "Opening Speaker",
+    start: "2024-09-28T10:15",
+    end: "2024-09-28T10:40",
+    title: "Check In & Breakfast Refreshments",
   },
   {
-    start: "2024-09-28T09:50",
-    end: "2024-09-28T10:50",
-    title: "Workshop 1",
-  },
-  {
-    start: "2024-09-28T11:00",
-    end: "2024-09-28T12:00",
-    title: "Lunch",
+    start: "2024-09-28T10:50",
+    end: "2024-09-28T11:50",
+    title: "Workshops: 'Develop'",
   },
   {
     start: "2024-09-28T12:00",
     end: "2024-09-28T12:45",
-    title: "Q&A Panel",
+    title: "Lunch",
   },
   {
     start: "2024-09-28T12:55",
-    end: "2024-09-28T13:55",
-    title: "Workshop 2",
+    end: "2024-09-28T13:35",
+    title: "UCI Administration Q&A",
   },
   {
-    start: "2024-09-28T14:05",
-    end: "2024-09-28T15:05",
-    title: "Workshop 3",
+    start: "2024-09-28T13:45",
+    end: "2024-09-28T14:45",
+    title: "Workshops: 'Design'",
   },
   {
-    start: "2024-09-28T15:15",
-    end: "2024-09-28T16:00",
-    title: "Ending Keynote and Giveaway",
+    start: "2024-09-28T14:45",
+    end: "2024-09-28T15:45",
+    title: "Workshops: 'Demonstrate'",
+  },
+  {
+    start: "2024-09-28T16:05",
+    end: "2024-09-28T16:30",
+    title: "Closing Remarks & Raffle",
   },
 ];
 

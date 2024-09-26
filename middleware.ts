@@ -62,13 +62,12 @@ export async function middleware(request: NextRequest) {
       .from("users")
       .select("*")
       .eq("id", userId);
-    data && console.log(data[0].workshops.length);
-    if(data && data[0].workshops.length < 2){
-        return NextResponse.redirect(new URL("/food/pending", request.url));
+    if(data && data[0].workshops.length >= 2){
+      if (!(data && data.length > 0 && data[0].food_tickets > 0)) {
+        return NextResponse.redirect(new URL("/", request.url));
       }
-
-    if (!(data && data.length > 0 && data[0].food_tickets > 0)) {
-      return NextResponse.redirect(new URL("/", request.url));
+    } else {
+      return NextResponse.redirect(new URL("/food/pending", request.url));
     }
 
   }
