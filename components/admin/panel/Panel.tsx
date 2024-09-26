@@ -220,6 +220,10 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
                 <div key={item.id} className="flex flex-col gap-2">
                   <p className="border border-gray-300 rounded-md p-2 text-lg">
                     {item.question}
+                    <br />
+                    <span className="text-sm text-gray-500">
+                      Reason: {item.message}
+                    </span>
                   </p>
                 </div>
               ))}

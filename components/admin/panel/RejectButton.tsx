@@ -14,6 +14,10 @@ const RejectModal: React.FC<RejectModalProps> = ({
   const [reason, setReason] = useState("");
 
   const handleReject = () => {
+    if (reason.trim() === "") {
+      alert("Please enter a reason for rejection.");
+      return;
+    }
     onReject(reason);
     setReason("");
     onClose();
