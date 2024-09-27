@@ -13,8 +13,8 @@ export async function middleware(request: NextRequest) {
   } 
 
   // Redirect to welcome if user is not logged in
-  const config = ["admin", "art", "certificate", "food", "panel", "profile", "workshop"];
-  if (!userId && config.some(path => request.nextUrl.pathname.includes(path))) {
+  const config = ["admin", "art", "certificate", "food", "panel", "profile", "workshop/"];
+  if (!userId && config.some(path => request.nextUrl.pathname.startsWith("/" + path))) {
         return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -72,29 +72,44 @@ export async function middleware(request: NextRequest) {
 
   }
 
-  // Add user to workshop
-  if(request.nextUrl.pathname.includes("/workshop")){
-    const workshopTitle = request.nextUrl.pathname.split("/")[2].split("-").join(" ");
-    const {data, error} = await supabase.from("users").select("workshops").eq("id", userId);
-    if (data && data.length > 0){
-      const user = data[0] as User;
-      const workshops = user.workshops;
-      if(!workshops.includes(workshopTitle)){
-        workshops.push(workshopTitle);
-        const {data: updatedData, error: updateError} = await supabase.from("users").update({workshops: workshops}).eq("id", userId);
-        const {data: raffleTicketsData, error: raffleTicketsError} = await supabase.from("users").select("raffle_tickets").eq("id", userId);
-        if(raffleTicketsData && raffleTicketsData.length > 0){
-          const raffleTickets = raffleTicketsData[0].raffle_tickets;
-          const {data: updatedRaffleTicketsData, error: updatedRaffleTicketsError} = await supabase.from("users").update({"raffle_tickets": raffleTickets + 1}).eq("id", userId);
-          if(updatedRaffleTicketsError){
+  const works = [
+  "advocacy-in-action",
+  "anteater-demonstration-archive",
+  "building-a-blueprint",
+  "chant-camp",
+  "growing-grassroots",
+    "pioneer-of-protest",
+  ];
+
+  // Add user to workshop and give raffle ticket
+  if(request.nextUrl.pathname == "/workshop"){
+    const workshopTitle = request.nextUrl.searchParams.get("workshop");
+    if(workshopTitle && works.includes(workshopTitle)){
+      const {data, error} = await supabase.from("users").select("workshops").eq("id", userId);
+      if (data && data.length > 0){
+        const user = data[0] as User;
+        const workshops = user.workshops;
+        if(!workshops.includes(workshopTitle)){
+          workshops.push(workshopTitle);
+          const {data: updatedData, error: updateError} = await supabase.from("users").update({workshops: workshops}).eq("id", userId);
+          const {data: raffleTicketsData, error: raffleTicketsError} = await supabase.from("users").select("raffle_tickets").eq("id", userId);
+          if(raffleTicketsData && raffleTicketsData.length > 0){
+            const raffleTickets = raffleTicketsData[0].raffle_tickets;
+            const {data: updatedRaffleTicketsData, error: updatedRaffleTicketsError} = await supabase.from("users").update({"raffle_tickets": raffleTickets + 1}).eq("id", userId);
+            if(updatedRaffleTicketsError){
             console.log(updatedRaffleTicketsError);
+          } else {
+            return NextResponse.redirect(new URL(`/workshops/${workshopTitle}`, request.url));
           }
+          
         }
         if(updateError){
-          console.log(updateError);
-        }
-        
-      } 
+            console.log(updateError);
+          }
+        } 
+      }
+    } else {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
