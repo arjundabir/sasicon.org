@@ -10,6 +10,10 @@ export default function Hero() {
         <Image src={SASI} alt="SASI" className="w-24" />
         <h2 className="text-3xl text-white ">SASI presents:</h2>
         <h1 className="text-5xl text-white font-medium w-full">SASICon 2024</h1>
+        <p className="text-white">
+          Located at Anteater Learning Pavilion on September 28th, starting at
+          10:15am
+        </p>
       </div>
       <div>
         <h2 className=" text-white ">Presented by:</h2>
