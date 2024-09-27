@@ -51,16 +51,17 @@ export default function QuestionCard({
     <div
       className={"w-full p-2 relative " + order[status as keyof typeof order]}
     >
-      {queuePosition === 1 && (
+      {status === "Approved" && (
         <Link
           href={`/panel/${id}`}
           className="absolute top-0 left-0 text-gray-500 w-full h-full z-10 flex items-center justify-center bg-[#f2c161] rounded-lg p-4"
         >
           <h1 className="text-[#1421a6] text-2xl font-medium">
-            You are up! Click here and show us your screen.
+            Click here and show us your screen to ask your question.
           </h1>
         </Link>
       )}
+
       <div className="relative border border-gray-200 p-4 rounded-lg">
         <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between ">
           <div className="ml-4 mt-4 ">
@@ -126,11 +127,8 @@ export default function QuestionCard({
             {status === "Approved" && (
               <div className="flex-1 flex flex-col items-end mt-2">
                 <div className="text-black text-sm rounded-md w-fit h-auto">
-                  Place in Queue
+                  Queued
                 </div>
-                <button className="bg-[#f2c161] mt-1 font-medium text-lg text-white p-0.5 rounded-md w-10 h-10">
-                  {queuePosition}
-                </button>
               </div>
             )}
           </div>

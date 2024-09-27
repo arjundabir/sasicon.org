@@ -9,7 +9,7 @@ import Image from "next/image";
 const QuestionDisplay = ({ panelQuestions }: { panelQuestions: Panel[] }) => {
   const [questions, setQuestions] = useState<Panel[]>(panelQuestions);
   const [approvedQuestion, setApprovedQuestion] = useState<Panel[]>(
-    questions.filter((question) => question.status === "Approved")
+    questions.filter((question) => question.status === "Queued")
   );
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const QuestionDisplay = ({ panelQuestions }: { panelQuestions: Panel[] }) => {
 
   useEffect(() => {
     setApprovedQuestion(
-      questions.filter((question) => question.status === "Approved")
+      questions.filter((question) => question.status === "Queued")
     );
   }, [questions]);
 

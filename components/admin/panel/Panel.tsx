@@ -99,13 +99,42 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
   useReloadWhenOnline();
 
   const inQueueCount =
-    dynamicPanel?.filter((item) => item.status === "Approved").length || 0;
+    dynamicPanel?.filter((item) => item.status === "Queued").length || 0;
 
   return (
     <div>
       <div>
         <h2 className="text-2xl font-bold leading-9 tracking-tight text-gray-900">
           In Queue: <span className="text-blue-500">{inQueueCount}</span>
+        </h2>
+        <div>
+          {dynamicPanel && dynamicPanel.length > 0 ? (
+            dynamicPanel.map((item, index) =>
+              item.status === "Queued" ? (
+                <div
+                  key={item.id}
+                  className="flex flex-col gap-2 border rounded-lg p-2"
+                >
+                  <p className="text-sm text-gray-500">{item.id.slice(0, 5)}</p>
+                  <p className="text-xl font-bold text-black">
+                    <span className="text-black font-medium text-sm">
+                      Question:{" "}
+                    </span>
+                    {item.question}
+                  </p>
+
+                  <AskedQuestionAlert id={item.id} />
+                </div>
+              ) : null
+            )
+          ) : (
+            <div>No questions in queue.</div>
+          )}
+        </div>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          Approved:
         </h2>
         <div>
           {dynamicPanel && dynamicPanel.length > 0 ? (
@@ -128,7 +157,7 @@ const Panel = ({ panel }: { panel: Panel[] | null }) => {
               ) : null
             )
           ) : (
-            <div>No questions in queue.</div>
+            <div>No questions approved.</div>
           )}
         </div>
       </div>

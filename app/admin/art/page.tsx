@@ -1,6 +1,7 @@
 import ArtList from "@/components/admin/art/ArtList";
 import supabase from "@/lib/supabase";
 import { Work } from "@/types/work";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const dynamic = "force-static";
 
@@ -10,13 +11,15 @@ type WorkVote = {
 };
 
 export default async function page() {
+  noStore();
+
   const {
     data: workVotes,
     error: workVotesError,
   }: { data: WorkVote[] | null; error: any } = await supabase
     .from("work_votes")
     .select("*")
-    .order("total_votes", { ascending: false });
+    .order("total_votes", { ascending: true });
   const {
     data: works,
     error: worksError,
@@ -32,7 +35,6 @@ export default async function page() {
     console.error("Error fetching works:", worksError);
   }
 
-  console.log(workVotes?.filter((vote) => vote.work_id === 1));
   let sortedWorks: (Work & { total_votes: number })[] = [];
   if (workVotes && works) {
     sortedWorks = works

@@ -1,4 +1,4 @@
-import Redirect from "@/components/panel/Redirect";
+import CodeorQuestion from "@/components/panel/CodeorQuestion";
 import supabase from "@/lib/supabase";
 import React from "react";
 
@@ -14,11 +14,10 @@ const page = async ({ params }: PageProps) => {
     .select("*")
     .eq("id", params.slug[0]);
   return (
-    <div className="bg-[#f2c161] flex justify-center items-center w-dvw h-dvh">
-      <Redirect panel={data?.[0]} />
-      <h1 className="text-[#1421a6] text-[30dvw] font-bold">
-        {params.slug[0].slice(0, 5)}
-      </h1>
+    <div className="bg-[#f2c161] flex flex-col justify-center items-center w-dvw h-dvh">
+      {/* <Redirect panel={data?.[0]} /> */}
+
+      <CodeorQuestion data={data?.[0]} />
     </div>
   );
 };
