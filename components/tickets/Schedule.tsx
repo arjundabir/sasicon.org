@@ -1,4 +1,6 @@
+"use client";
 import React from "react";
+
 const events = [
   {
     start: "2024-09-28T16:30:00Z", // 09:30 PST + 7 hours = 16:30 UTC
@@ -7,7 +9,7 @@ const events = [
   },
   {
     start: "2024-09-28T17:15:00Z", // 10:15 PST + 7 hours = 17:15 UTC
-    end: "2024-09-28T17:40:00Z", // 10:40 PST + 7 hours = 17:40 UTC
+    end: "2024-09-28T17:50:00Z", // 10:40 PST + 7 hours = 17:40 UTC
     title: "Live Table Read and Annotation",
   },
   {
@@ -51,29 +53,46 @@ const Schedule = () => {
       </h2>
       <ol className="mt-2 divide-y divide-gray-200 text-sm leading-6 text-gray-500">
         {events
-          .filter((event) => new Date(event.start) > timeNow)
-          .map((event, index) => (
-            <li key={index} className="py-4 sm:flex">
-              <p className="w-full flex-none">
-                <time dateTime={event.start}>
-                  {new Date(event.start).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </time>{" "}
-                -{" "}
-                <time dateTime={event.end}>
-                  {new Date(event.end).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </time>
-              </p>
-              <p className="mt-2 flex-auto font-semibold text-gray-900 sm:mt-0">
-                {event.title}
-              </p>
-            </li>
-          ))}
+          .filter((event) => new Date(event.end) > timeNow)
+          .map((event, index) => {
+            const eventStart = new Date(event.start);
+            const eventEnd = new Date(event.end);
+            const isInProgress = eventStart <= timeNow && eventEnd >= timeNow;
+
+            return (
+              <li key={index} className="py-4 sm:flex">
+                <p className="w-full flex-none">
+                  {isInProgress ? (
+                    <span className="text-yellow-500 italic">In Progress</span>
+                  ) : (
+                    <>
+                      <time dateTime={event.start}>
+                        {eventStart.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </time>{" "}
+                      -{" "}
+                      <time dateTime={event.end}>
+                        {eventEnd.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </time>
+                    </>
+                  )}
+                </p>
+                <p
+                  className={
+                    "mt-2 flex-auto font-semibold sm:mt-0 " +
+                    (isInProgress ? " text-blue-800" : " text-gray-900")
+                  }
+                >
+                  {event.title}
+                </p>
+              </li>
+            );
+          })}
       </ol>
     </section>
   );
