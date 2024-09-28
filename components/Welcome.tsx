@@ -16,8 +16,11 @@ const hero = localFont({
 
 const isWithinTimeFrame = () => {
   const now = new Date();
-  const targetDate = new Date("2024-09-28T9:30:00");
-  const endDate = new Date("2024-09-28T10:15:00");
+
+  // PST is UTC-7 during daylight saving time
+  const targetDate = new Date("2024-09-28T09:30:00-07:00");
+  const endDate = new Date("2024-09-28T10:15:00-07:00");
+
   return now >= targetDate && now <= endDate;
 };
 

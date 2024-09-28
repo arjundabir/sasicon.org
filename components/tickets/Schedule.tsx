@@ -2,9 +2,14 @@ import React from "react";
 
 const events = [
   {
+    start: "2024-09-28T09:30",
+    end: "2024-09-28T10:10",
+    title: "Check In & Breakfast Refreshments",
+  },
+  {
     start: "2024-09-28T10:15",
     end: "2024-09-28T10:40",
-    title: "Check In & Breakfast Refreshments",
+    title: "Live Table Read and Annotation",
   },
   {
     start: "2024-09-28T10:50",
