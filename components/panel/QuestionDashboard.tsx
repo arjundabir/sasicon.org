@@ -1,5 +1,4 @@
 import { Panel } from "@/types/panel";
-import EditQuestionButton from "./EditQuestionButton";
 import Link from "next/link";
 import QuestionTableBody from "./QuestionTableBody";
 

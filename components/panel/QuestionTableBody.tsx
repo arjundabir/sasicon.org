@@ -69,7 +69,7 @@ const QuestionTableBody = ({
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "panel" },
-        (payload) => {
+        async (payload) => {
           console.log("Change received!", payload);
           if (payload.eventType === "INSERT") {
             setQuestions((prev) => [...prev, payload.new as Panel]);
@@ -79,6 +79,18 @@ const QuestionTableBody = ({
                 item.id === payload.new.id ? (payload.new as Panel) : item
               )
             );
+            if (payload.new.status === "Approved") {
+              const response = await fetch(`/api/admin/tickets`, {
+                method: "POST",
+                body: JSON.stringify({ id: payload.new.user_id, tickets: 1 }),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+              if (response.ok) {
+                console.log("Tickets added successfully");
+              }
+            }
           } else if (payload.eventType === "DELETE") {
             setQuestions((prev) =>
               prev.filter((item) => item.id !== payload.old.id)
